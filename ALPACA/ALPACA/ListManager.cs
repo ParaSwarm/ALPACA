@@ -18,6 +18,7 @@ namespace ALPACA
         public void mergeList(List<String> inputList1, List<String> inputList2)
         {
             inputList1.AddRange(inputList2);
+            inputList1.Sort();
             exportList(inputList1); 
         }
         public void removeList(List<String> inputList)

@@ -1,0 +1,10 @@
+ALPACA.Domain/bin/
+ALPACA.Domain/obj/
+ALPACA.test/obj/
+ALPACA.Web/bin/
+ALPACA.Web/obj/
+ALPACA.Web/App_Data/
+ALPACA.v12.suo
+ALPACA/bin/
+ALPACA/obj/
+packages/

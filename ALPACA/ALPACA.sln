@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C34014
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ALPACA.Database", "ALPACA.Database\ALPACA.Database.sqlproj", "{ADDB49CE-56F5-468D-AD9E-260320B7E39B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,12 @@ Global
 		{FF3266D0-B80B-4075-B889-ACB63A69BD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF3266D0-B80B-4075-B889-ACB63A69BD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF3266D0-B80B-4075-B889-ACB63A69BD36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADDB49CE-56F5-468D-AD9E-260320B7E39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADDB49CE-56F5-468D-AD9E-260320B7E39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADDB49CE-56F5-468D-AD9E-260320B7E39B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{ADDB49CE-56F5-468D-AD9E-260320B7E39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADDB49CE-56F5-468D-AD9E-260320B7E39B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADDB49CE-56F5-468D-AD9E-260320B7E39B}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

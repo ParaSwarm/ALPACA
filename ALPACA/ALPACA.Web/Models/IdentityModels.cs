@@ -16,6 +16,15 @@ namespace ALPACA.Web.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public virtual MyUserInfo MyUserInfo { get; set; }
+    }
+
+    public class MyUserInfo
+    {
+        public int Id { get; set; }
+        public string firstname { get; set; }
+        public string lastname { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +38,7 @@ namespace ALPACA.Web.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<MyUserInfo> MyUserInfo { get; set; }
     }
 }

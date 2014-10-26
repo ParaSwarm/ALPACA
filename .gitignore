@@ -1,6 +1,7 @@
 ALPACA/ALPACA.Domain/bin/
 ALPACA/ALPACA.Domain/obj/
 ALPACA/ALPACA.test/obj/
+ALPACA/ALPACA.test/bin/
 ALPACA/ALPACA.Web/bin/
 ALPACA/ALPACA.Web/obj/
 ALPACA/ALPACA.v12.suo
@@ -9,3 +10,5 @@ ALPACA/ALPACA/obj/
 ALPACA/packages/
 ALPACA/ALPACA.Database/ALPACA.Database.dbmdl
 ALPACA/ALPACA.Database/ALPACA.Database.sqlproj.user
+ALPACA/ALPACA.Database/bin/
+ALPACA/ALPACA.Database/obj/

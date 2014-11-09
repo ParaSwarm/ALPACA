@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ALPACA.Web.ViewModels;
 using System.Web.Mvc;
 
 namespace ALPACA.Web.Controllers
@@ -10,21 +7,9 @@ namespace ALPACA.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-        }
+            var model = new MainViewModel();
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View(model);
         }
     }
 }

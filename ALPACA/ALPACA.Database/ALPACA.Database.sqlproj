@@ -74,4 +74,10 @@
       <DatabaseVariableLiteralValue>msdb</DatabaseVariableLiteralValue>
     </ArtifactReference>
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="ALPACA.Database.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ALPACA.publish.xml" />
+  </ItemGroup>
 </Project>

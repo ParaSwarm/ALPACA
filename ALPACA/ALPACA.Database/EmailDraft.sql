@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Drafts]
+﻿CREATE TABLE [dbo].[EmailDraft]
 (
 	[Id] INT NOT NULL PRIMARY KEY,
 	[UserId] INT NOT NULL,  

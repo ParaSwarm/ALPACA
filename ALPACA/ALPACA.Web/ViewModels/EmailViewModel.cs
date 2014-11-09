@@ -10,6 +10,6 @@ namespace ALPACA.Web.ViewModels
         }
 
         public string EmailBody { get; set; }
-        public List<string> Drafts { get; set; }
+        public IEnumerable<string> Drafts { get; set; }
     }
 }

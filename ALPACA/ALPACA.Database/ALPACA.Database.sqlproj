@@ -59,8 +59,8 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Contacts.sql" />
-    <Build Include="Drafts.sql" />
+    <Build Include="User.sql" />
+    <Build Include="EmailDraft.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">

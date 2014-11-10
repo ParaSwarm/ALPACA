@@ -11,7 +11,7 @@ namespace ALPACA.Web.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using NHibernate;
-    using ALPACA.Domain.Entities;
+    using ALPACA.Entities;
     using ALPACA.Web.Code;
 
     public static class NinjectWebCommon 
@@ -64,12 +64,12 @@ namespace ALPACA.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<ISessionFactory>().ToMethod(c => AlpacaDatabaseFactory.CreateSessionFactory()).InRequestScope();
+            kernel.Bind<ISessionFactory>().ToMethod(c => AlpacaDatabaseFactory.CreateSessionFactory()).InSingletonScope();
             kernel.Bind<ISession>().ToMethod(c => kernel.Get<ISessionFactory>().OpenSession()).InRequestScope();
             kernel.Bind<IMainBusiness>().To<MainBusiness>().InRequestScope();
             kernel.Bind<UserManager>().ToSelf().InRequestScope();
-            kernel.Bind<User>().ToMethod(c => kernel.Get<UserManager>().CurrentUser).InRequestScope();
+            kernel.Bind<AlpacaUser>().ToMethod(c => kernel.Get<UserManager>().CurrentUser).InRequestScope();
             kernel.Bind<HttpContextBase>().ToMethod(c => new HttpContextWrapper(HttpContext.Current)).InRequestScope();
-        }        
+        }
     }
 }

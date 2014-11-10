@@ -1,4 +1,4 @@
-﻿using ALPACA.Domain.Entities;
+﻿using ALPACA.Entities;
 using Ninject;
 using System.Web;
 
@@ -11,18 +11,18 @@ namespace ALPACA.Web.Code
         [Inject]
         public IMainBusiness MainBusiness { get; set; }
 
-        private User _currentUser;
-        public User CurrentUser
+        private AlpacaUser _currentUser;
+        public AlpacaUser CurrentUser
         {
             get
             {
                 if (_currentUser != null) return _currentUser;
 
-                _currentUser = HttpContext.Session["CurrentUser"] as User;
+                _currentUser = HttpContext.Session["CurrentUser"] as AlpacaUser;
 
                 if (_currentUser != null) return _currentUser;
 
-                _currentUser = new User();//MainBusiness.GetUser(HttpContext.User.Identity.Name);
+                _currentUser = MainBusiness.GetUser("dselinger");
                 
                 HttpContext.Session["CurrentUser"] = _currentUser;
 

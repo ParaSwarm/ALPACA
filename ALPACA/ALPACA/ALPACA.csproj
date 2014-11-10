@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlpacaDatabaseFactory.cs" />
+    <Compile Include="Entities\EmailDraft.cs" />
+    <Compile Include="Entities\AlpacaUser.cs" />
     <Compile Include="ListManager.cs" />
     <Compile Include="MainBusiness.cs" />
     <Compile Include="Mappings\AutoMappingConfiguration.cs" />

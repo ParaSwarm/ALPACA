@@ -1,5 +1,18 @@
 ﻿@model ALPACA.Web.ViewModels.EmailViewModel
 
 @Html.Kendo().EditorFor(m => m.EmailBody)
+@Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);" })
 
-
+<script type="text/javascript">
+    function loadDraft(e) {
+        var draftName = $(e).val();
+        if (draftName.length) {
+            $.get(
+                '@Url.Action("GetDraftBody")',
+                { draftName: draftName },
+                function (result) {
+                    $('#EmailBody').data('kendoEditor').value(result);
+                });
+        }
+    }
+</script>

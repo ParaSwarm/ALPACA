@@ -57,10 +57,10 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="EmailDraft.sql" />
-    <Build Include="User.sql" />
+    <Build Include="Tables\EmailDraft.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\120\SqlSchemas\master.dacpac">
@@ -79,5 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ALPACA.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\AlpacaUser.sql" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@ namespace ALPACA.Mappings
     {
         public override bool ShouldMap(Type type)
         {
-            return type.Namespace == "ALPACA.Domain.Entities";
+            return type.Namespace == "ALPACA.Entities";
         }
 
         public override bool IsComponent(Type type)

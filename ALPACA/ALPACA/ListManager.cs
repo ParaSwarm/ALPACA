@@ -1,36 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ALPACA
 {
-    class ListManager
+    public class ListManager
     {
-        private List<String> addressList;
+        private List<string> addressList;
 
-        public void mergeList(List<String> inputList)
+        public void MergeList(List<string> inputList)
         {
             addressList.AddRange(inputList);
             addressList.Sort();
         }
-        public void mergeList(List<String> inputList1, List<String> inputList2)
+        public void MergeList(List<string> inputList1, List<string> inputList2)
         {
             inputList1.AddRange(inputList2);
             inputList1.Sort();
-            exportList(inputList1); 
+            ExportList(inputList1); 
         }
-        public void removeList(List<String> inputList)
+        public void RemoveList(List<string> inputList)
         {
             addressList = addressList.Except(inputList).ToList();
             addressList.Sort();
         }
-        public void exportList()
+        public void ExportList()
         {
-            exportList(addressList); 
+            ExportList(addressList); 
         }
-        public void exportList(List<String> outList)
+        public void ExportList(List<string> outList)
         {
             //TODO export code
         }

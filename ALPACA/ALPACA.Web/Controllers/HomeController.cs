@@ -49,7 +49,7 @@ namespace ALPACA.Web.Controllers
         }
     }
 
-    enum UploadType
+    public enum UploadType
     {
         Add,
         Remove

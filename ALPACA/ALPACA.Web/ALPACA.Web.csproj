@@ -296,10 +296,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ALPACA.Domain\ALPACA.Domain.csproj">
-      <Project>{ff3266d0-b80b-4075-b889-acb63a69bd36}</Project>
-      <Name>ALPACA.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ALPACA\ALPACA.csproj">
       <Project>{f144aa32-beca-4174-9c13-6059d1a507a8}</Project>
       <Name>ALPACA</Name>

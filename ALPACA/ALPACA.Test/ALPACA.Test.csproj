@@ -59,10 +59,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ALPACA.Domain\ALPACA.Domain.csproj">
-      <Project>{ff3266d0-b80b-4075-b889-acb63a69bd36}</Project>
-      <Name>ALPACA.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ALPACA.Web\ALPACA.Web.csproj">
       <Project>{499da88e-f145-4018-9bda-5154b17c643a}</Project>
       <Name>ALPACA.Web</Name>

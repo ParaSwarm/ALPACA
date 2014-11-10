@@ -2,7 +2,10 @@
 
 @Html.Kendo().EditorFor(m => m.EmailBody)
 @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);" })
-
+@using (Html.BeginForm("SaveDraft", "Home", FormMethod.Post, new { id = "SaveDraftForm"}))
+{
+    <input id="SaveButton" type="submit" value="Save" />  
+}
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();

@@ -33,7 +33,11 @@ namespace ALPACA.Web.Controllers
         {
             return MainBusiness.GetDraftBody(CurrentUser.Id, draftName);
         }
-
+        [HttpPost]
+        public ContentResult SaveDraft()
+        {
+            return Content("stuff");
+        }
         public ContentResult UploadFile(IEnumerable<HttpPostedFileBase> files, UploadType uploadType)
         {
             if(uploadType == UploadType.Add)

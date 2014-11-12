@@ -2,10 +2,7 @@
 
 @Html.Kendo().EditorFor(m => m.EmailBody)
 @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);" })
-@using (Html.BeginForm("SaveDraft", "Home", FormMethod.Post, new { id = "SaveDraftForm"}))
-{
-    <input id="SaveButton" type="submit" value="Save" />  
-}
+<button id="saveDraftButton" onclick="saveDraft();">Save Draft</button>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();
@@ -18,4 +15,13 @@
                 });
         }
     }
+
+    function saveDraft()
+    {
+        var draftBody = $('#EmailBody').data('kendoEditor').value();
+        var draftName = 'noName';
+        $.post(
+            '@Url.Action("SaveDraft")',
+            { draftName: draftName, draftBody: draftBody }
+    )};
 </script>

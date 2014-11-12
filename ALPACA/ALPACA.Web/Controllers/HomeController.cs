@@ -34,9 +34,9 @@ namespace ALPACA.Web.Controllers
             return MainBusiness.GetDraftBody(CurrentUser.Id, draftName);
         }
         [HttpPost]
-        public ContentResult SaveDraft()
+        public string SaveDraft(string draftName, string draftBody)
         {
-            return Content("stuff");
+            return MainBusiness.SaveDraft(CurrentUser.Id, draftName, draftBody);
         }
         public ContentResult UploadFile(IEnumerable<HttpPostedFileBase> files, UploadType uploadType)
         {

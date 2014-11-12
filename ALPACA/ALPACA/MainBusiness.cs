@@ -1,5 +1,6 @@
 ﻿using ALPACA.Entities;
 using NHibernate;
+using NHibernate.Exceptions;
 using Ninject;
 using System.Collections.Generic;
 
@@ -32,12 +33,24 @@ namespace ALPACA
         }
         public string SaveDraft(int userId, string draftName, string draftBody)
         {
-            EmailDraft DraftToSave = new EmailDraft();
-            DraftToSave.UserId = userId;
-            DraftToSave.Name = draftName;
-            DraftToSave.Body = draftBody;
-            Session.SaveOrUpdate(DraftToSave);
-            return "WE DID IT!";
+            EmailDraft draft = Session.QueryOver<EmailDraft>()
+                                                .Where(x => x.Name == draftName).SingleOrDefault();
+            if(draft != null)
+            {
+                draft.Body = draftBody;
+                Session.SaveOrUpdate(draft);
+                Session.Flush();
+            }
+            else
+            {
+                EmailDraft DraftToSave = new EmailDraft();
+                DraftToSave.UserId = userId;
+                DraftToSave.Name = draftName;
+                DraftToSave.Body = draftBody;
+                Session.SaveOrUpdate(DraftToSave);
+                Session.Flush();
+            }
+            return "success";
         }
 
         public string AddToList(IEnumerable<string> listToAdd)
@@ -53,5 +66,6 @@ namespace ALPACA
         AlpacaUser GetUser(string loginName);
         IEnumerable<EmailDraft> GetDrafts(int userId);
         string GetDraftBody(int userId, string draftName);
+        string SaveDraft(int userId, string draftName, string draftBody);
     }
 }

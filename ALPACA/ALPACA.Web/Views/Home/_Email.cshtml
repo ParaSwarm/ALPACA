@@ -1,8 +1,9 @@
 ﻿@model ALPACA.Web.ViewModels.EmailViewModel
 
 @Html.Kendo().EditorFor(m => m.EmailBody)
-@Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);" })
-<button id="saveDraftButton" onclick="saveDraft();">Save Draft</button>
+@Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id ="draftDropdown" })
+@Html.TextBox("newDraftName")
+<button id="saveDraftButton" onclick="saveDraft();" class="btn btn-default" >Save Draft</button>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();
@@ -19,9 +20,23 @@
     function saveDraft()
     {
         var draftBody = $('#EmailBody').data('kendoEditor').value();
-        var draftName = 'noName';
+        var draftName = $('#newDraftName').val();
+        if (draftName.length == 0)
+        {
+            draftName = $('#draftDropdown').val();
+        }
         $.post(
             '@Url.Action("SaveDraft")',
-            { draftName: draftName, draftBody: draftBody }
-    )};
+            { draftName: draftName, draftBody: draftBody }, alert("Draft Saved")
+    )
+    };
+   
 </script>
+<div id="modal-dialog" style="display:none">
+    <form name="draftNameForm">
+        <fieldset>
+            <input id="draftNameText" type="text" value="" />
+            <input type="submit" value="Submit" />
+        </fieldset>
+    </form>
+</div>

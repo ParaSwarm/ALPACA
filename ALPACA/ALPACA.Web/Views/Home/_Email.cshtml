@@ -34,10 +34,17 @@
                 var html = '';
                 $.each(data.draftNames, function (i, val) {
                     $('#draftDropdown').append($('<option></option>').text(val.Name).val(val.Name));/* added "val()" also*/
-                    //html.push(option);
                 });
-               // $('#draftNames').html(html);
-            } @*placeholder alert until I get around to the toast*@
+                $.each(data.draftNames,
+                    function (index, value)
+                    {
+                        if (value.Name == draftName)
+                        {
+                            $('#draftDropdown').val(value.Name);
+                            $('#newDraftName').val("");
+                        }
+                    });
+            } 
     )
     };
 

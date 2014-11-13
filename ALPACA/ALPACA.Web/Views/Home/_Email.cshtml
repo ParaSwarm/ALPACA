@@ -2,7 +2,7 @@
 
 @Html.Kendo().EditorFor(m => m.EmailBody)
 @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id ="draftDropdown" })
-@Html.TextBox("newDraftName")
+@Html.TextBox("newDraftName") @*text field is tacky as fuck, going to replace with a modal text entry ASAP*@
 <button id="saveDraftButton" onclick="saveDraft();" class="btn btn-default" >Save Draft</button>
 <script type="text/javascript">
     function loadDraft(e) {

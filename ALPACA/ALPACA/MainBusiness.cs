@@ -37,9 +37,17 @@ namespace ALPACA
                                                 .Where(x => x.Name == draftName).SingleOrDefault();
             if(draft != null)
             {
-                draft.Body = draftBody;
-                Session.SaveOrUpdate(draft);
-                Session.Flush();
+                if(draftBody =="")//empty body indicates user wishes to delete draft
+                {
+                    Session.Delete(draft);
+                    Session.Flush();
+                }
+                else
+                {
+                    draft.Body = draftBody;
+                    Session.SaveOrUpdate(draft);
+                    Session.Flush();
+                }
             }
             else
             {

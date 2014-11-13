@@ -3,6 +3,7 @@
 @Html.Kendo().EditorFor(m => m.EmailBody)
 @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown" })
 <button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-default">Save Draft</button>
+<button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-default">Delete Draft</button>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();
@@ -47,12 +48,35 @@
                         if (value.Name == draftName)
                         {
                             $('#draftDropdown').val(value.Name);
-                            $('#newDraftName').val("");
                         }
                     });
             } 
     )
     };
+    function deleteDraft()
+    {
+        var draftName = $('#draftDropdown').val();
+        if(draftName.length == 0)
+        {
+            return;
+        }
+        $.post(
+            '@Url.Action("DeleteDraft")',
+            { draftName: draftName },
+            function (data) {
+                alert("Draft Deleted");
+                $('#draftDropdown').empty();
+                var html = '';
+                $('#draftDropdown').append($('<option></option>').text("").val(""));
+                $.each(data.draftNames, function (i, val) {
+                    $('#draftDropdown').append($('<option></option>').text(val.Name).val(val.Name));/* added "val()" also*/
+                });
+                $('#draftDropdown').val("");
+            })
+        $('#EmailBody').data('kendoEditor').value("");
+
+        }
+    
     
     function getModalName()
     {

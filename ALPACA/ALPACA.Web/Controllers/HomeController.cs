@@ -41,6 +41,13 @@ namespace ALPACA.Web.Controllers
 
             return Json(new { draftNames = MainBusiness.GetDrafts(CurrentUser.Id) });
         }
+        [HttpPost]
+        public JsonResult DeleteDraft(string draftName)
+        {
+            MainBusiness.DeleteDraft(CurrentUser.Id, draftName);
+
+            return Json(new { draftNames = MainBusiness.GetDrafts(CurrentUser.Id) });
+        }
         public ContentResult UploadFile(IEnumerable<HttpPostedFileBase> files, UploadType uploadType)
         {
             if(uploadType == UploadType.Add)

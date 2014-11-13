@@ -61,6 +61,18 @@ namespace ALPACA
             }
             return "success";
         }
+        public string DeleteDraft(int userId, string draftName)
+        {
+            EmailDraft draft = Session.QueryOver<EmailDraft>()
+                                                .Where(x => x.Name == draftName).SingleOrDefault();
+            if(draft != null)
+            {
+                Session.Delete(draft);
+                Session.Flush();
+                return "success";
+            }
+            return "fail";
+        }
 
         public string AddToList(IEnumerable<string> listToAdd)
         {
@@ -76,5 +88,6 @@ namespace ALPACA
         IEnumerable<EmailDraft> GetDrafts(int userId);
         string GetDraftBody(int userId, string draftName);
         string SaveDraft(int userId, string draftName, string draftBody);
+        string DeleteDraft(int userId, string draftName);
     }
 }

@@ -31,6 +31,7 @@ namespace ALPACA
                             .And(x => x.Name == draftName)
                             .SingleOrDefault().Body;
         }
+
         public string SaveDraft(int userId, string draftName, string draftBody)
         {
             EmailDraft draft = Session.QueryOver<EmailDraft>()

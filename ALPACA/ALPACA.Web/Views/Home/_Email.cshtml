@@ -1,9 +1,9 @@
 ﻿@model ALPACA.Web.ViewModels.EmailViewModel
 
 @Html.Kendo().EditorFor(m => m.EmailBody)
-@Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id ="draftDropdown" })
+@Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown" })
 @Html.TextBox("newDraftName") @*text field is tacky as fuck, going to replace with a modal text entry ASAP*@
-<button id="saveDraftButton" onclick="saveDraft();" class="btn btn-default" >Save Draft</button>
+<button id="saveDraftButton" onclick="saveDraft();" class="btn btn-default">Save Draft</button>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();
@@ -27,10 +27,20 @@
         }
         $.post(
             '@Url.Action("SaveDraft")',
-            { draftName: draftName, draftBody: draftBody }, alert("Draft Saved")
+            { draftName: draftName, draftBody: draftBody },
+            function (data) {
+                alert("Draft Saved");
+                $('#draftDropdown').empty();
+                var html = '';
+                $.each(data.draftNames, function (i, val) {
+                    $('#draftDropdown').append($('<option></option>').text(val.Name).val(val.Name));/* added "val()" also*/
+                    //html.push(option);
+                });
+               // $('#draftNames').html(html);
+            } @*placeholder alert until I get around to the toast*@
     )
     };
-   
+
 </script>
 <div id="modal-dialog" style="display:none">
     <form name="draftNameForm">

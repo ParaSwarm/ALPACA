@@ -9,6 +9,7 @@ using System.Web.Mvc;
 namespace ALPACA.Web.Controllers
 {
     //[Authorize]
+    [ValidateInput(false)]
     public class HomeController : Controller
     {
         [Inject]
@@ -34,9 +35,11 @@ namespace ALPACA.Web.Controllers
             return MainBusiness.GetDraftBody(CurrentUser.Id, draftName);
         }
         [HttpPost]
-        public string SaveDraft(string draftName, string draftBody)
+        public JsonResult SaveDraft(string draftName, string draftBody)
         {
-            return MainBusiness.SaveDraft(CurrentUser.Id, draftName, draftBody);
+            MainBusiness.SaveDraft(CurrentUser.Id, draftName, draftBody);
+
+            return Json(new { draftNames = MainBusiness.GetDrafts(CurrentUser.Id) });
         }
         public ContentResult UploadFile(IEnumerable<HttpPostedFileBase> files, UploadType uploadType)
         {

@@ -2,8 +2,7 @@
 
 @Html.Kendo().EditorFor(m => m.EmailBody)
 @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown" })
-@Html.TextBox("newDraftName") @*text field is tacky as fuck, going to replace with a modal text entry ASAP*@
-<button id="saveDraftButton" onclick="saveDraft();" class="btn btn-default">Save Draft</button>
+<button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-default">Save Draft</button>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();
@@ -17,13 +16,19 @@
         }
     }
 
-    function saveDraft()
+    function saveDraft(dName)
     {
         var draftBody = $('#EmailBody').data('kendoEditor').value();
-        var draftName = $('#newDraftName').val();
+        var draftName = dName;
+        if(draftName.length == 0)
+        {
+            var draftName = $('#draftDropdown').val();
+        }
         if (draftName.length == 0)
         {
-            draftName = $('#draftDropdown').val();
+            $('#modalName').val("");
+            $('#modal-dialog').modal('show')
+            return;
         }
         $.post(
             '@Url.Action("SaveDraft")',
@@ -32,6 +37,7 @@
                 alert("Draft Saved");
                 $('#draftDropdown').empty();
                 var html = '';
+                $('#draftDropdown').append($('<option></option>').text("").val(""));
                 $.each(data.draftNames, function (i, val) {
                     $('#draftDropdown').append($('<option></option>').text(val.Name).val(val.Name));/* added "val()" also*/
                 });
@@ -47,13 +53,29 @@
             } 
     )
     };
+    
+    function getModalName()
+    {
+        var draftName = $('#modalName').val();
+        $('#modal-dialog').modal('hide');
+        saveDraft(draftName);
+    }
+
 
 </script>
-<div id="modal-dialog" style="display:none">
-    <form name="draftNameForm">
-        <fieldset>
-            <input id="draftNameText" type="text" value="" />
-            <input type="submit" value="Submit" />
-        </fieldset>
-    </form>
-</div>
+<div class="modal fade" id="modal-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Attention:</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please enter a name for your draft&hellip;</p>
+                <input type="text" class="form-control" placeholder="Text input" id="modalName" >
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="getModalName();">Save draft</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

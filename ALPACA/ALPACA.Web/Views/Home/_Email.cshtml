@@ -1,9 +1,11 @@
 ﻿@model ALPACA.Web.ViewModels.EmailViewModel
 
 @Html.Kendo().EditorFor(m => m.EmailBody)
-@Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown" })
-<button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-default">Save Draft</button>
+<button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-primary"i>Save Draft</button>
 <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-default">Delete Draft</button>
+@Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown" })
+<button id="sendEmail" class="btn btn-success" style="float:right">Send Email</button>
+<button id="attachFile" class="btn btn-default" style="float:right">Attach File</button>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();
@@ -95,7 +97,7 @@
             </div>
             <div class="modal-body">
                 <p>Please enter a name for your draft&hellip;</p>
-                <input type="text" class="form-control" placeholder="Text input" id="modalName" >
+                <input type="text" class="form-control" placeholder="Draft Name" id="modalName" >
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" onclick="getModalName();">Save draft</button>

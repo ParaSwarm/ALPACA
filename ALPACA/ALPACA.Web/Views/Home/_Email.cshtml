@@ -1,11 +1,20 @@
 ﻿@model ALPACA.Web.ViewModels.EmailViewModel
-
-@Html.Kendo().EditorFor(m => m.EmailBody)
-<button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-primary"i>Save Draft</button>
-<button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-default">Delete Draft</button>
-@Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown" })
-<button id="sendEmail" class="btn btn-success" style="float:right">Send Email</button>
-<button id="attachFile" class="btn btn-default" style="float:right">Attach File</button>
+<div class="container">
+<div class="row">
+    <div class="col-md-12">
+        @Html.Kendo().EditorFor(m => m.EmailBody)
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2 col-sm-push-2">
+        @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown" })
+    </div>
+        <button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-primary col-md-1 col-sm-pull-2">Save Draft</button>
+        <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-default col-md-1 col-sm-pull-2">Delete Draft</button>
+        <button id="attachFile" class="btn btn-default col-md-1 col-sm-offset-6 col-xs-offset-0">Attach File</button>
+        <button id="sendEmail" class="btn btn-success col-md-1">Send Email</button>
+</div>
+</div>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();

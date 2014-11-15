@@ -3,14 +3,24 @@
 <div class="row">
     <div class="col-md-12">
         @Html.Kendo().EditorFor(m => m.EmailBody)
-    <div class="col-md-2 col-sm-push-2">
-        @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown" })
     </div>
-    <button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-primary col-md-1 col-sm-pull-2">Save Draft</button>
-    <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-default col-md-1 col-sm-pull-2">Delete Draft</button>
-    <button id="attachFile" class="btn btn-default col-md-1 col-sm-offset-5 col-xs-offset-0">Attach File</button>
-    <button id="sendEmail" class="btn btn-success col-md-1 col-sm-offset-1">Send Email</button>
+</div>
+<div class="row">
+    <div class="col-sm-2 col-sm-push-4 col-xs-12">
+        @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown", @class="form-control" })
     </div>
+        <span class="col-sm-2 col-sm-pull-2">
+            <button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-primary btn-block">Save Draft</button>
+        </span>
+        <span class=" col-sm-2 col-sm-pull-2">
+            <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-default btn-block">Delete Draft</button>
+        </span>
+        <span class="col-sm-2 col-sm-offset-2 col-xs-offset-0">
+            <button id="attachFile" class="btn btn-default btn-block">Attach File</button>
+        </span>
+        <span class="col-sm-2 col-sm-offset-0">
+            <button id="sendEmail" class="btn btn-success btn-block">Send Email</button>
+        </span>
 </div>
 </div>
 <script type="text/javascript">
@@ -107,7 +117,7 @@
                 <input type="text" class="form-control" placeholder="Draft Name" id="modalName" >
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" onclick="getModalName();">Save draft</button>
+                <button type="button" class="btn btn-success" onclick="getModalName();">Save draft</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

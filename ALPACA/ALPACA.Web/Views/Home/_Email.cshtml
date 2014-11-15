@@ -101,6 +101,11 @@
     {
         var draftName = $('#modalName').val();
         $('#modal-dialog').modal('hide');
+        if (draftName == "")
+        {
+            alert("Draft not saved, you must enter a name.");
+            return;
+        }
         saveDraft(draftName);
     }
 

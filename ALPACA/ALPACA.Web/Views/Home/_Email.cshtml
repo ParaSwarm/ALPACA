@@ -108,7 +108,14 @@
         }
         saveDraft(draftName);
     }
+    $(document).ready(function () //bind the modal text boxes enter keypress to the modal submit button
+    {
+        $('#modalName').keypress(function (e) {
+            if (e.keyCode == 13)
+                $('#modalButton').click();
+        });
 
+    });
 
 </script>
 <div class="modal fade" id="modal-dialog">
@@ -119,10 +126,10 @@
             </div>
             <div class="modal-body">
                 <p>Please enter a name for your draft&hellip;</p>
-                <input type="text" class="form-control" placeholder="Draft Name" id="modalName" >
+                <input type="text" autofocus="autofocus" class="form-control" placeholder="Draft Name" id="modalName" >
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" onclick="getModalName();">Save draft</button>
+                <button type="button" id="modalButton" class="btn btn-success" onclick="getModalName();">Save draft</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -74,11 +74,7 @@ namespace ALPACA.Web.Controllers
                 }
             }
 
-<<<<<<< HEAD
-            return Json(new { result = "failed" });
-=======
             return Json(new { Success = true });
->>>>>>> 7860305277f29e2ba8b8f1403054ddce20283eca
         }
     }
 

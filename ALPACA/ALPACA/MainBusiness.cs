@@ -80,6 +80,13 @@ namespace ALPACA
 
             return "";
         }
+
+        public string RemoveFromList(IEnumerable<string> listToRemove)
+        {
+            //ListManageer.RemoveList(listToAdd);
+
+            return "";
+        }
     }
 
     public interface IMainBusiness
@@ -89,5 +96,7 @@ namespace ALPACA
         string GetDraftBody(int userId, string draftName);
         string SaveDraft(int userId, string draftName, string draftBody);
         string DeleteDraft(int userId, string draftName);
+        string AddToList(IEnumerable<string> listToAdd);
+        string RemoveFromList(IEnumerable<string> listToRemove);
     }
 }

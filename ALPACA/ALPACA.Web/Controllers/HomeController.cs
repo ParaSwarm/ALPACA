@@ -2,6 +2,7 @@
 using ALPACA.Web.ViewModels;
 using Ninject;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -52,11 +53,25 @@ namespace ALPACA.Web.Controllers
         {
             if(uploadType == UploadType.Add)
             {
-                //Add
+                //Add - get the list from the file and pass it to the MainBusiness AddToList method
+                foreach (HttpPostedFileBase file in files) 
+                {
+                    StreamReader reader = new StreamReader(file.InputStream);
+                    string stringFromFile = reader.ReadToEnd();
+                    IEnumerable<string> fileContents = stringFromFile.Split('\n').ToList();
+                    string result = MainBusiness.AddToList(fileContents);
+                }
             }
             else
             {
-                //Remove
+                //Remove - get the list from the file and pass it to the MainBusiness RemoveFromList method
+                foreach (HttpPostedFileBase file in files)
+                {
+                    StreamReader reader = new StreamReader(file.InputStream);
+                    string stringFromFile = reader.ReadToEnd();
+                    IEnumerable<string> fileContents = stringFromFile.Split('\n').ToList();
+                    string result = MainBusiness.RemoveFromList(fileContents);
+                }
             }
 
             return Content("Successful");

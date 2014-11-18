@@ -8,12 +8,7 @@
                         .AutoUpload(false)
                     )
                     .Events(e => e
-                        .Upload(@<text>
-                            function(e) 
-                            {
-                                e.data = { UploadType: $("#UploadType").val() };
-                            }
-                        </text>)
+                        .Upload("onUpload")
                     )
             )
 
@@ -24,24 +19,23 @@
                         new SelectListItem()
                         {
                             Text="Add",
-                            Value="1"
+                            Value="0"
                         },
                         new SelectListItem()
                         {
                             Text="Remove",
-                            Value="2"
+                            Value="1"
                         }
                     })
-                    .Value("1")
+                    .Value("0")
             )
         </div>
     </div>
 </div>
 
 <script>
-    function onUpload(e) 
+    function onUpload(e)
     {
-        var arg = $("#UploadType").val();
-        e.arguments = { UploadType: arg };
+        e.data = { uploadType: $("#UploadType").val() };
     }
 </script>

@@ -49,7 +49,7 @@ namespace ALPACA.Web.Controllers
 
             return Json(new { draftNames = MainBusiness.GetDrafts(CurrentUser.Id) });
         }
-        public ContentResult UploadFile(IEnumerable<HttpPostedFileBase> files, UploadType uploadType)
+        public JsonResult UploadFile(IEnumerable<HttpPostedFileBase> files, UploadType uploadType)
         {
             if(uploadType == UploadType.Add)
             {
@@ -74,7 +74,7 @@ namespace ALPACA.Web.Controllers
                 }
             }
 
-            return Content("Successful");
+            return Json(new { result = "success" });
         }
     }
 

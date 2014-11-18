@@ -74,7 +74,7 @@ namespace ALPACA.Web.Controllers
                 }
             }
 
-            return Json(new { result = "success" });
+            return Json(new { result = "failed" });
         }
     }
 

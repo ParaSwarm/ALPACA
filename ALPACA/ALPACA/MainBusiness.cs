@@ -15,8 +15,7 @@ namespace ALPACA
 
         public AlpacaUser GetUser(string accountName)
         {
-            AlpacaUser ToReturn = Session.QueryOver<AlpacaUser>().Where(x => x.AccountName == accountName).SingleOrDefault();
-            return ToReturn;
+            return Session.QueryOver<AlpacaUser>().Where(x => x.AccountName == accountName).SingleOrDefault();
         }
 
         public IEnumerable<EmailDraft> GetDrafts(int userId)
@@ -47,7 +46,6 @@ namespace ALPACA
                 {
                     draft.Body = draftBody;
                     Session.SaveOrUpdate(draft);
-                    Session.Flush();
                 }
             }
             else
@@ -57,10 +55,10 @@ namespace ALPACA
                 DraftToSave.Name = draftName;
                 DraftToSave.Body = draftBody;
                 Session.SaveOrUpdate(DraftToSave);
-                Session.Flush();
             }
             return "success";
         }
+
         public string DeleteDraft(int userId, string draftName)
         {
             EmailDraft draft = Session.QueryOver<EmailDraft>()
@@ -68,7 +66,7 @@ namespace ALPACA
             if(draft != null)
             {
                 Session.Delete(draft);
-                Session.Flush();
+
                 return "success";
             }
             return "fail";

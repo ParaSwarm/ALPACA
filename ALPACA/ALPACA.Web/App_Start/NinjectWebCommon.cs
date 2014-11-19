@@ -13,6 +13,8 @@ namespace ALPACA.Web.App_Start
     using NHibernate;
     using ALPACA.Entities;
     using ALPACA.Web.Code;
+    using ALPACA.Web.Filters;
+    using Ninject.Web.Mvc.FilterBindingSyntax;
 
     public static class NinjectWebCommon 
     {
@@ -70,6 +72,8 @@ namespace ALPACA.Web.App_Start
             kernel.Bind<UserManager>().ToSelf().InRequestScope();
             kernel.Bind<AlpacaUser>().ToMethod(c => kernel.Get<UserManager>().CurrentUser).InRequestScope();
             kernel.Bind<HttpContextBase>().ToMethod(c => new HttpContextWrapper(HttpContext.Current)).InRequestScope();
+
+            kernel.BindFilter<UnitOfWorkFilter>(System.Web.Mvc.FilterScope.Controller, 0).InRequestScope();
         }
     }
 }

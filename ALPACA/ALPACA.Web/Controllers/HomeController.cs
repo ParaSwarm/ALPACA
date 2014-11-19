@@ -80,7 +80,10 @@ namespace ALPACA.Web.Controllers
                                 fName = CurrentUser.FirstName, 
                                 lName = CurrentUser.LastName, 
                                 email = CurrentUser.Email,
-                                emailPassword = CurrentUser.EmailPassword});
+                                emailPassword = CurrentUser.EmailPassword,
+                                emailServer = CurrentUser.EmailServer,
+                                emailPort = CurrentUser.EmailPort,
+                                pass = CurrentUser.AccountPassword});
         }
         public JsonResult SaveUserInfo(string email, string fName, string lName, string pass,
                                         string emailPass, string emailServer, string emailPort)

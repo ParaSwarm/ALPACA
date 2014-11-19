@@ -22,8 +22,9 @@
         <span class="label label-primary">First Name:</span>
         <input id="userFirstName" class="form-control"/>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-6">
         <span class="label label-primary">Email Service:</span>
+        <br />
         @(Html.Kendo().DropDownList()
         .Name("EmailService")
                     .BindTo(new List<SelectListItem>()
@@ -35,7 +36,7 @@
                         },
                         new SelectListItem()
                         {
-                            Text="Other",
+                            Text="Other really long test name",
                             Value="1"
                         }
                     })

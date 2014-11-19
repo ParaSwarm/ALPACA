@@ -10,11 +10,11 @@
     </div>
     <div class="col-md-6">
         <span class="label label-primary">Password:</span>
-        <input id="userPassword" class="form-control"/>
+        <input id="userPassword" type="password" class="form-control"/>
     </div>
     <div class="col-md-6">
         <span class="label label-primary">Email Password:</span>
-        <input id="userEmailPassword" class="form-control"/>
+        <input id="userEmailPassword" type="password" class="form-control"/>
     </div>
 </div>    
 <div class="row">
@@ -80,6 +80,13 @@
         <input id="userSMTPPort" class="form-control"/>
     </div>
 </div>
+<br />
+<div class="row">
+    <span class="col-md-10"></span>
+    <span class="col-md-2">
+        <button class="btn btn-success btn-block">Save</button>
+    </span>
+</div>
 </div>
 <script>
     function OnChange()
@@ -138,4 +145,17 @@
 
         }
     }
+    $(document).ready(function ()
+    {
+        $.post('@Url.Action("GetUserInfo")',
+                {},
+                function (data) {
+                    $('#userName').val(data.userName);
+                    $('#userEmail').val(data.email);
+                    $('#userFirstName').val(data.fName);
+                    $('#userLastName').val(data.lName);
+                    $('#userEmailPassword').val(data.emailPassword);
+                })
+
+    });
 </script>

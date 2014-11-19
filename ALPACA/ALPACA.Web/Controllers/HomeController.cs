@@ -74,6 +74,15 @@ namespace ALPACA.Web.Controllers
 
             return Json(new { Success = true });
         }
+        public JsonResult GetUserInfo()
+        {
+            return Json(new {userName = CurrentUser.AccountName, 
+                                fName = CurrentUser.FirstName, 
+                                lName = CurrentUser.LastName, 
+                                email = CurrentUser.Email,
+                                emailPassword = CurrentUser.EmailPassword});
+        }
+
     }
 
     public enum UploadType

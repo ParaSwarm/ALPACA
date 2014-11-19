@@ -78,19 +78,6 @@ namespace ALPACA
         {
             //ListManager.MergeList(listToAdd);
 
-            //temp code
-            var user = new AlpacaUser
-            {
-                AccountName = "CoolBro",
-                FirstName = "Cool",
-                LastName = "Bro",
-                Contacts = listToAdd,
-                Email = "cooolbro@hotmail.com"
-            };
-
-            Session.Save(user);
-            Session.Flush();
-
             return "";
         }
 

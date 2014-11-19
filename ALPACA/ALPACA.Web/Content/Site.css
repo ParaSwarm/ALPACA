@@ -22,3 +22,15 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.k-file-success {
+    color: #28760b;
+}
+
+    .k-file-success .k-progress {
+        background-color: #ddffd0;
+    }
+
+.k-dropzone .k-upload-status {
+    color: #28760b;
+}

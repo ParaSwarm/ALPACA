@@ -1,0 +1,41 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            @(Html.Kendo().Upload()
+                    .Name("files")
+                    .Async(a => a
+                        .Save("UploadFile", "Home")
+                        .AutoUpload(false)
+                    )
+                    .Events(e => e
+                        .Upload("onUpload")
+                    )
+            )
+
+            @(Html.Kendo().DropDownList()
+                    .Name("UploadType")
+                    .BindTo(new List<SelectListItem>()
+                    {
+                        new SelectListItem()
+                        {
+                            Text="Add",
+                            Value="0"
+                        },
+                        new SelectListItem()
+                        {
+                            Text="Remove",
+                            Value="1"
+                        }
+                    })
+                    .Value("0")
+            )
+        </div>
+    </div>
+</div>
+
+<script>
+    function onUpload(e)
+    {
+        e.data = { uploadType: $("#UploadType").val() };
+    }
+</script>

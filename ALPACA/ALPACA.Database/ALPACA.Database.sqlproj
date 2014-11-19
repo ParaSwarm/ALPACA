@@ -78,7 +78,7 @@
     <RefactorLog Include="ALPACA.Database.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ALPACA.publish.xml" />
+    <None Include="ALPACA.Dave.publish.xml" />
     <None Include="ALPACA.DeskSteve.publish.publish.xml" />
   </ItemGroup>
   <ItemGroup>

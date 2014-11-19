@@ -31,7 +31,7 @@ namespace ALPACA.Web.Controllers
             return View(model);
         }
 
-        public string GetDraftBody(string draftName) 
+        public string GetDraftBody(string draftName)
         {
             return MainBusiness.GetDraftBody(CurrentUser.Id, draftName);
         }
@@ -49,28 +49,26 @@ namespace ALPACA.Web.Controllers
 
             return Json(new { draftNames = MainBusiness.GetDrafts(CurrentUser.Id) });
         }
+
         public JsonResult UploadFile(IEnumerable<HttpPostedFileBase> files, UploadType uploadType)
         {
-            if(uploadType == UploadType.Add)
+            string result = string.Empty;
+
+            foreach (HttpPostedFileBase file in files)
             {
-                //Add - get the list from the file and pass it to the MainBusiness AddToList method
-                foreach (HttpPostedFileBase file in files) 
+                StreamReader reader = new StreamReader(file.InputStream);
+                string stringFromFile = reader.ReadToEnd();
+                IList<string> fileContents = stringFromFile.Split('\n').ToList();
+
+                switch (uploadType)
                 {
-                    StreamReader reader = new StreamReader(file.InputStream);
-                    string stringFromFile = reader.ReadToEnd();
-                    IEnumerable<string> fileContents = stringFromFile.Split('\n').ToList();
-                    string result = MainBusiness.AddToList(fileContents);
-                }
-            }
-            else
-            {
-                //Remove - get the list from the file and pass it to the MainBusiness RemoveFromList method
-                foreach (HttpPostedFileBase file in files)
-                {
-                    StreamReader reader = new StreamReader(file.InputStream);
-                    string stringFromFile = reader.ReadToEnd();
-                    IEnumerable<string> fileContents = stringFromFile.Split('\n').ToList();
-                    string result = MainBusiness.RemoveFromList(fileContents);
+                    case UploadType.Add:
+                        var lol = new List<string> { "Dave@dave.com", "steve&steve.com", "mel@mel.com" };
+                        result += MainBusiness.AddToList(lol);
+                        break;
+                    case UploadType.Remove:
+                        result += MainBusiness.RemoveFromList(fileContents);
+                        break;
                 }
             }
 

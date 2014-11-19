@@ -74,7 +74,9 @@
     <Compile Include="MainBusiness.cs" />
     <Compile Include="Mappings\AutoMappingConfiguration.cs" />
     <Compile Include="Mappings\CustomForeignKeyConvention.cs" />
+    <Compile Include="Mappings\NHibernateDelimitedList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

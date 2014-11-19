@@ -74,14 +74,27 @@ namespace ALPACA
             return "fail";
         }
 
-        public string AddToList(IEnumerable<string> listToAdd)
+        public string AddToList(IList<string> listToAdd)
         {
             //ListManager.MergeList(listToAdd);
+
+            //temp code
+            //var user = new AlpacaUser
+            //{
+            //    AccountName = "CoolBro",
+            //    FirstName = "Cool",
+            //    LastName = "Bro",
+            //    Contacts = listToAdd,
+            //    Email = "cooolbro@hotmail.com"
+            //};
+
+            //Session.Save(user);
+            //Session.Flush();
 
             return "";
         }
 
-        public string RemoveFromList(IEnumerable<string> listToRemove)
+        public string RemoveFromList(IList<string> listToRemove)
         {
             //ListManageer.RemoveList(listToAdd);
 
@@ -96,7 +109,7 @@ namespace ALPACA
         string GetDraftBody(int userId, string draftName);
         string SaveDraft(int userId, string draftName, string draftBody);
         string DeleteDraft(int userId, string draftName);
-        string AddToList(IEnumerable<string> listToAdd);
-        string RemoveFromList(IEnumerable<string> listToRemove);
+        string AddToList(IList<string> listToAdd);
+        string RemoveFromList(IList<string> listToRemove);
     }
 }

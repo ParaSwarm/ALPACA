@@ -29,9 +29,9 @@ namespace ALPACA.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/bootstrap.css",
-                        "~/Content/site.css",
                         "~/Content/kendo.common.min.css",
-                        "~/Content/kendo.bootstrap.min.css"));
+                        "~/Content/kendo.bootstrap.min.css",
+                        "~/Content/Site.css"));
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862

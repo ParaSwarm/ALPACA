@@ -25,6 +25,10 @@ namespace ALPACA.Web.Controllers
                 Email = new EmailViewModel
                 {
                     DraftNames = MainBusiness.GetDrafts(CurrentUser.Id).Select(x => x.Name)
+                },
+                Users = new UserViewModel
+                {
+                    Users = MainBusiness.GetUsers().Select(x =>x.AccountName)
                 }
             };
 
@@ -85,18 +89,55 @@ namespace ALPACA.Web.Controllers
                                 emailPort = CurrentUser.EmailPort,
                                 pass = CurrentUser.AccountPassword});
         }
-        public JsonResult SaveUserInfo(string email, string fName, string lName, string pass,
+        public JsonResult GetUserByName(string username)
+        {
+            var user = MainBusiness.GetUser(username);
+            return Json(new {userName = user.AccountName, 
+                                fName = user.FirstName, 
+                                lName = user.LastName, 
+                                email = user.Email,
+                                emailPassword = user.EmailPassword,
+                                emailServer = user.EmailServer,
+                                emailPort = user.EmailPort,
+                                pass = user.AccountPassword});
+
+        }
+        public JsonResult SaveUserInfo(string username, string email, string fName, string lName, string pass,
                                         string emailPass, string emailServer, string emailPort)
         {
-            CurrentUser.Email = email;
-            CurrentUser.EmailPassword = emailPass;
-            CurrentUser.FirstName = fName;
-            CurrentUser.LastName = lName;
-            CurrentUser.AccountPassword = pass;
-            CurrentUser.EmailServer = emailServer;
-            CurrentUser.EmailPort = emailPort;
-            MainBusiness.SaveUser(CurrentUser);
-            return Json(new{success = true});
+            if(username == CurrentUser.AccountName)
+            {
+                CurrentUser.Email = email;
+                CurrentUser.EmailPassword = emailPass;
+                CurrentUser.FirstName = fName;
+                CurrentUser.LastName = lName;
+                CurrentUser.AccountPassword = pass;
+                CurrentUser.EmailServer = emailServer;
+                CurrentUser.EmailPort = emailPort;
+                MainBusiness.SaveUser(CurrentUser);
+            }
+            else
+            {
+                AlpacaUser newUser = new AlpacaUser();
+                newUser.AccountName = username;
+                newUser.Email = email;
+                newUser.EmailPassword = emailPass;
+                newUser.FirstName = fName;
+                newUser.LastName = lName;
+                newUser.AccountPassword = pass;
+                newUser.EmailServer = emailServer;
+                newUser.EmailPort = emailPort;
+                MainBusiness.SaveUser(newUser);
+
+            }
+
+            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.AccountName) });
+        }
+        public JsonResult DeleteUser(string username)
+        {
+            var user = MainBusiness.GetUser(username);
+            MainBusiness.DeleteUser(user);
+            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.AccountName) });
         }
 
     }

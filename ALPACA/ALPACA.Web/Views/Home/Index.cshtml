@@ -14,7 +14,7 @@
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="listManagement"><br />@{ Html.RenderPartial("_Files"); }</div>
-                <div role="tabpanel" class="tab-pane" id="userManagement"><br />@{Html.RenderPartial("_User");}</div>
+                <div role="tabpanel" class="tab-pane" id="userManagement"><br />@{Html.RenderPartial("_AdminUser", Model.Users);}</div>
             </div>
         </div>
     </div>

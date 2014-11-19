@@ -1,1 +1,253 @@
-﻿
+﻿@model ALPACA.Web.ViewModels.UserViewModel
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-4">
+        @Html.DropDownListFor(m => m.SelectedUser, new SelectList(Model.Users), "New User", new {@size = "12",@style = "font-size:14px;", @onchange = "PopulateUser(this.value);", @id = "usersListbox", @class="form-control" })
+    </div>
+    <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-6">
+            <span class="label label-primary">Username:</span>
+            <input id="userName" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <span class="label label-primary">Email Address:</span>
+            <input id="userEmail" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <span class="label label-primary">Password:</span>
+            <input id="userPassword" type="password" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <span class="label label-primary">Email Password:</span>
+            <input id="userEmailPassword" type="password" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <span class="label label-primary">First Name:</span>
+            <input id="userFirstName" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <span class="label label-primary">Email Service:</span>
+            <br />
+            @(Html.Kendo().DropDownList()
+        .Name("EmailService").Events(e => e.Change("OnChange"))
+                    .BindTo(new List<SelectListItem>()
+                    {
+                        new SelectListItem()
+                        {
+                            Text="Other",
+                            Value="0"
+                        },
+                        new SelectListItem()
+                        {
+                            Text="Gmail",
+                            Value="1"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "Yahoo",
+                            Value = "2"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "Outlook",
+                            Value = "3"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "AT&T",
+                            Value = "4"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "Verizon",
+                            Value = "5"
+                        }
+                    })
+                    .Value("0")
+            )
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <span class="label label-primary">Last Name:</span>
+            <input id="userLastName" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <span class="label label-primary" id="ServerLabel">SMTP Server:</span>
+            <input id="userSMTPServer" class="form-control" />
+        </div>
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <span class="label label-primary" id="PortLabel">SMTP Port:</span>
+            <input id="userSMTPPort" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <span class="col-md-4"></span>
+        <span class="col-md-4">
+            <button class="btn btn-danger btn-block" onclick="DeleteUser();">Delete User</button>
+        </span>
+        <span class="col-md-4">
+            <button class="btn btn-success btn-block" onclick="SaveUser();">Save User</button>
+        </span>
+    </div>
+    </div>
+</div>
+</div>
+<script>
+    function OnChange()
+    {
+        var serviceNumber = $('#EmailService').val();
+        switch(serviceNumber)
+        {
+            case "0":
+                $('#userSMTPServer').val("");
+                $("#userSMTPServer").attr("readonly", false);
+                $('#ServerLabel').addClass('label-primary').removeClass('label-default');
+                $('#userSMTPPort').val("");
+                $("#userSMTPPort").attr("readonly", false);
+                $('#PortLabel').addClass('label-primary').removeClass('label-default');
+                break;
+            case "1":
+                $('#userSMTPServer').val("smtp.gmail.com");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#ServerLabel').addClass('label-default').removeClass('label-primary');
+                $('#userSMTPPort').val("587");
+                $("#userSMTPPort").attr("readonly", true);
+                $('#PortLabel').addClass('label-default').removeClass('label-primary');
+                break;
+            case "2":
+                $('#userSMTPServer').val("smtp.mail.yahoo.com");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#ServerLabel').addClass('label-default').removeClass('label-primary');
+                $('#userSMTPPort').val("465");
+                $("#userSMTPPort").attr("readonly", true);
+                $('#PortLabel').addClass('label-default').removeClass('label-primary');
+                break;
+            case "3":
+                $('#userSMTPServer').val("smtp.live.com");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#ServerLabel').addClass('label-default').removeClass('label-primary');
+                $('#userSMTPPort').val("587");
+                $("#userSMTPPort").attr("readonly", true);
+                $('#PortLabel').addClass('label-default').removeClass('label-primary');
+                break;
+            case "4":
+                $('#userSMTPServer').val("smtp.att.yahoo.com");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#ServerLabel').addClass('label-default').removeClass('label-primary');
+                $('#userSMTPPort').val("465");
+                $("#userSMTPPort").attr("readonly", true);
+                $('#PortLabel').addClass('label-default').removeClass('label-primary');
+                break;
+            case "5":
+                $('#userSMTPServer').val("outgoing.yahoo.verizon.net");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#ServerLabel').addClass('label-default').removeClass('label-primary');
+                $('#userSMTPPort').val("587");
+                $("#userSMTPPort").attr("readonly", true);
+                $('#PortLabel').addClass('label-default').removeClass('label-primary');
+                break;
+
+        }
+    }
+    function SaveUser()
+    {
+        var username = $('#userName').val();
+        var email = $('#userEmail').val();
+        var fName = $('#userFirstName').val();
+        var lName = $('#userLastName').val();
+        var pass = $('#userPassword').val();
+        var emailPass = $('#userEmailPassword').val();
+        var emailServer = $('#userSMTPServer').val();
+        var emailPort = $('#userSMTPPort').val();
+        $.post('@Url.Action("SaveUserInfo")',
+            {
+                username: username,
+                email: email,
+                fName: fName,
+                lName: lName,
+                pass: pass,
+                emailPass: emailPass,
+                emailServer: emailServer,
+                emailPort: emailPort
+            }, function (data) {
+                alert("User info saved");
+                $('#usersListbox').empty();
+                var html = '';
+                $('#usersListbox').append($('<option></option>').text("New User").val(""));
+                $.each(data.usernames, function (i, val) {
+                    $('#usersListbox').append($('<option></option>').text(val).val(val));/* added "val()" also*/
+                });
+                $.each(data.draftNames,
+                    function (index, value) {
+                        if (value == username) {
+                            $('#usersListbox').val(value);
+                        }
+                    });
+            });
+    }
+    function DeleteUser()
+    {
+        var username = $('#userName').val();
+        if (username == "")
+            return false;
+        $.post('@Url.Action("DeleteUser")',
+            { username: username },
+            function (data)
+            {
+                $('#usersListbox').empty();
+                var html = '';
+                $('#usersListbox').append($('<option></option>').text("New User").val(""));
+                $.each(data.usernames, function (i, val) {
+                    $('#usersListbox').append($('<option></option>').text(val).val(val));/* added "val()" also*/
+                });
+                $('#usersListbox').val("");
+                $('#userName').val("");
+                $('#userEmail').val("");
+                $('#userFirstName').val("");
+                $('#userLastName').val("");
+                $('#userEmailPassword').val("");
+                $('#userPassword').val("");
+                $('#userSMTPServer').val("");
+                $('#userSMTPPort').val("");
+            });
+
+    }
+    function PopulateUser(username)
+    {
+        if (username == "")
+        {
+            $('#userName').val("");
+            $('#userEmail').val("");
+            $('#userFirstName').val("");
+            $('#userLastName').val("");
+            $('#userEmailPassword').val("");
+            $('#userPassword').val("");
+            $('#userSMTPServer').val("");
+            $('#userSMTPPort').val("");
+            return true;
+        }
+        $.post('@Url.Action("GetUserByName")',
+                { username: username },
+                function (data) {
+                    $('#userName').val(data.userName);
+                    $('#userEmail').val(data.email);
+                    $('#userFirstName').val(data.fName);
+                    $('#userLastName').val(data.lName);
+                    $('#userEmailPassword').val(data.emailPassword);
+                    $('#userPassword').val(data.pass);
+                    $('#userSMTPServer').val(data.emailServer);
+                    $('#userSMTPPort').val(data.emailPort);
+                });
+    }
+    $(document).ready(function ()
+    {
+        $('#userListbox').val("");
+    });
+</script>

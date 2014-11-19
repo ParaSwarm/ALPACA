@@ -22,6 +22,10 @@ namespace ALPACA
         {
             return Session.QueryOver<EmailDraft>().Where(x => x.UserId == userId).List();
         }
+        public IEnumerable<AlpacaUser> GetUsers()
+        {
+            return Session.QueryOver<AlpacaUser>().List();
+        }
 
         public string GetDraftBody(int userId, string draftName)
         {
@@ -90,6 +94,11 @@ namespace ALPACA
             Session.SaveOrUpdate(user);
             return "yaaaay";
         }
+        public string DeleteUser(AlpacaUser user)
+        {
+            Session.Delete(user);
+            return "deleted";
+        }
     }
 
     public interface IMainBusiness
@@ -102,5 +111,8 @@ namespace ALPACA
         string AddToList(IList<string> listToAdd);
         string RemoveFromList(IList<string> listToRemove);
         string SaveUser(AlpacaUser user);
+        string DeleteUser(AlpacaUser user);
+        IEnumerable<AlpacaUser> GetUsers();
+
     }
 }

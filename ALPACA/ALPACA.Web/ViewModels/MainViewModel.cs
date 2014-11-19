@@ -6,8 +6,10 @@ namespace ALPACA.Web.ViewModels
         public MainViewModel()
         {
             Email = new EmailViewModel();
+            Users = new UserViewModel();
         }
 
         public EmailViewModel Email { get; set; }
+        public UserViewModel Users { get; set; }
     }
 }

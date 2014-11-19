@@ -147,6 +147,7 @@
     }
     function SaveUser()
     {
+        var username = $('#userName').val();
         var email = $('#userEmail').val();
         var fName = $('#userFirstName').val();
         var lName = $('#userLastName').val();
@@ -156,6 +157,7 @@
         var emailPort = $('#userSMTPPort').val();
         $.post('@Url.Action("SaveUserInfo")',
             {
+                username: username,
                 email: email,
                 fName: fName,
                 lName: lName,

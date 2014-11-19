@@ -7,7 +7,7 @@
 </div>
 <div class="row">
     <div class="col-sm-2 col-sm-push-4 col-lg-push-2 col-xs-12">
-        @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown", @class="form-control" })
+        @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:20px;", @onchange = "loadDraft(this);", @id = "draftDropdown", @class="form-control btn-default" })
     </div>
         <span class="col-sm-2 col-lg-1 col-sm-pull-2">
             <button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-primary btn-block">Save</button>

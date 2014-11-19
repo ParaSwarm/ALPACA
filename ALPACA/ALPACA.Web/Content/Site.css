@@ -34,3 +34,6 @@ textarea {
 .k-dropzone .k-upload-status {
     color: #28760b;
 }
+.k-dropdown{
+    width: 100%;
+}

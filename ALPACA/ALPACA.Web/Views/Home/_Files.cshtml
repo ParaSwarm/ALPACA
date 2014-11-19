@@ -11,7 +11,8 @@
                         .Upload("onUpload")
                     )
             )
-
+        </div>
+            <div class="col-md-2">
             @(Html.Kendo().DropDownList()
                     .Name("UploadType")
                     .BindTo(new List<SelectListItem>()
@@ -28,8 +29,8 @@
                         }
                     })
                     .Value("0")
-            )
-        </div>
+                    )
+            </div>
     </div>
 </div>
 

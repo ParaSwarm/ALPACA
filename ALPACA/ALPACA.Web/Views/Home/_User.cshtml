@@ -1,19 +1,62 @@
-﻿
+﻿<div class="container-fluid">
 <div class="row">
     <div class="col-md-6">
-        <label>User Name:</label>
+        <span class="label label-primary">Username:</span>
         <input id="userName" class="form-control"/>
     </div>
     <div class="col-md-6">
-        <label>Email Address:</label>
+        <span class="label label-primary">Email Address:</span>
         <input id="userEmail" class="form-control"/>
     </div>
     <div class="col-md-6">
-        <label>Password:</label>
+        <span class="label label-primary">Password:</span>
         <input id="userPassword" class="form-control"/>
     </div>
     <div class="col-md-6">
-        <label>Email Password:</label>
+        <span class="label label-primary">Email Password:</span>
         <input id="userEmailPassword" class="form-control"/>
     </div>
+</div>    
+<div class="row">
+    <div class="col-md-6">
+        <span class="label label-primary">First Name:</span>
+        <input id="userFirstName" class="form-control"/>
+    </div>
+    <div class="col-md-5">
+        <span class="label label-primary">Email Service:</span>
+        @(Html.Kendo().DropDownList()
+        .Name("EmailService")
+                    .BindTo(new List<SelectListItem>()
+                    {
+                        new SelectListItem()
+                        {
+                            Text="Gmail",
+                            Value="0"
+                        },
+                        new SelectListItem()
+                        {
+                            Text="Other",
+                            Value="1"
+                        }
+                    })
+                    .Value("0")
+                    )    
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <span class="label label-primary">Last Name:</span>
+        <input id="userLastName" class="form-control"/>
+    </div>
+    <div class="col-md-6">
+        <span class="label label-primary">SMTP Server:</span>
+        <input id="userSMTPServer" class="form-control"/>
+    </div>
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+        <span class="label label-primary">SMTP Port:</span>
+        <input id="userSMTPPort" class="form-control"/>
+    </div>
+</div>
 </div>

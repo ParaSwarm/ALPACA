@@ -105,6 +105,7 @@ namespace ALPACA.Web.Controllers
         public JsonResult SaveUserInfo(string username, string email, string fName, string lName, string pass,
                                         string emailPass, string emailServer, string emailPort)
         {
+            var userBeingUpdated = MainBusiness.GetUser(username);
             if(username == CurrentUser.AccountName)
             {
                 CurrentUser.Email = email;
@@ -116,7 +117,7 @@ namespace ALPACA.Web.Controllers
                 CurrentUser.EmailPort = emailPort;
                 MainBusiness.SaveUser(CurrentUser);
             }
-            else
+            else if(userBeingUpdated == null)
             {
                 AlpacaUser newUser = new AlpacaUser();
                 newUser.AccountName = username;
@@ -129,6 +130,18 @@ namespace ALPACA.Web.Controllers
                 newUser.EmailPort = emailPort;
                 MainBusiness.SaveUser(newUser);
 
+            }
+            else
+            {
+                userBeingUpdated.AccountName = username;
+                userBeingUpdated.Email = email;
+                userBeingUpdated.EmailPassword = emailPass;
+                userBeingUpdated.FirstName = fName;
+                userBeingUpdated.LastName = lName;
+                userBeingUpdated.AccountPassword = pass;
+                userBeingUpdated.EmailServer = emailServer;
+                userBeingUpdated.EmailPort = emailPort;
+                MainBusiness.SaveUser(userBeingUpdated);
             }
 
             return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.AccountName) });

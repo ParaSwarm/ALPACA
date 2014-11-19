@@ -82,6 +82,19 @@ namespace ALPACA.Web.Controllers
                                 email = CurrentUser.Email,
                                 emailPassword = CurrentUser.EmailPassword});
         }
+        public JsonResult SaveUserInfo(string email, string fName, string lName, string pass,
+                                        string emailPass, string emailServer, string emailPort)
+        {
+            CurrentUser.Email = email;
+            CurrentUser.EmailPassword = emailPass;
+            CurrentUser.FirstName = fName;
+            CurrentUser.LastName = lName;
+            CurrentUser.AccountPassword = pass;
+            CurrentUser.EmailServer = emailServer;
+            CurrentUser.EmailPort = emailPort;
+            MainBusiness.SaveUser(CurrentUser);
+            return Json(new{success = true});
+        }
 
     }
 

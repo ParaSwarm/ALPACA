@@ -85,6 +85,11 @@ namespace ALPACA
 
             return "";
         }
+        public string SaveUser(AlpacaUser user)
+        {
+            Session.SaveOrUpdate(user);
+            return "yaaaay";
+        }
     }
 
     public interface IMainBusiness
@@ -96,5 +101,6 @@ namespace ALPACA
         string DeleteDraft(int userId, string draftName);
         string AddToList(IList<string> listToAdd);
         string RemoveFromList(IList<string> listToRemove);
+        string SaveUser(AlpacaUser user);
     }
 }

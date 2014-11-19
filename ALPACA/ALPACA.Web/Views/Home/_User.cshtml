@@ -84,7 +84,7 @@
 <div class="row">
     <span class="col-md-10"></span>
     <span class="col-md-2">
-        <button class="btn btn-success btn-block">Save</button>
+        <button class="btn btn-success btn-block" onclick="SaveUser();">Save</button>
     </span>
 </div>
 </div>
@@ -144,6 +144,28 @@
                 break;
 
         }
+    }
+    function SaveUser()
+    {
+        var email = $('#userEmail').val();
+        var fName = $('#userFirstName').val();
+        var lName = $('#userLastName').val();
+        var pass = $('#userPassword').val();
+        var emailPass = $('#userEmailPassword').val();
+        var emailServer = $('#userSMTPServer').val();
+        var emailPort = $('#userSMTPPort').val();
+        $.post('@Url.Action("SaveUserInfo")',
+            {
+                email: email,
+                fName: fName,
+                lName: lName,
+                pass: pass,
+                emailPass: emailPass,
+                emailServer: emailServer,
+                emailPort: emailPort
+            }, function () {
+                alert("User info saved"); 
+            });
     }
     $(document).ready(function ()
     {

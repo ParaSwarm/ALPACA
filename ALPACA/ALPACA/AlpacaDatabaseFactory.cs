@@ -1,4 +1,5 @@
-﻿using ALPACA.Mappings;
+﻿using ALPACA.Entities;
+using ALPACA.Mappings;
 using ALPACA.Mappings;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
@@ -15,7 +16,8 @@ namespace ALPACA
             return Fluently.Configure()
                     .Database(MsSqlConfiguration.MsSql2012.ConnectionString(c => c.FromConnectionStringWithKey("ALPACA")))
                             .Mappings(m => m.AutoMappings.Add(AutoMap.AssemblyOf<AutoMappingConfiguration>(automapConfiguration)
-                                .Conventions.Setup(c => c.Add<CustomForeignKeyConvention>())))
+                                .Conventions.Setup(c => c.Add<CustomForeignKeyConvention>())
+                                .Override<AlpacaUser>(map => map.Map(x => x.Contacts).CustomType<NHibernateDelimitedList>())))
                     .BuildSessionFactory();
         }
     }

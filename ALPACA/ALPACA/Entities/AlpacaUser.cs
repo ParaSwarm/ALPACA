@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ALPACA.Entities
 {
@@ -13,6 +9,6 @@ namespace ALPACA.Entities
         public virtual string AccountName { get; set; }
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
-        //public virtual List<string> Contacts { get; set; }
+        public virtual List<string> Contacts { get; set; }
     }
 }

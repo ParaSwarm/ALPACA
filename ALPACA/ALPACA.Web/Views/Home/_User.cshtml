@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-md-6">
         <span class="label label-primary">Username:</span>
-        <input id="userName" class="form-control"/>
+        <input readonly id="userName" class="form-control"/>
     </div>
     <div class="col-md-6">
         <span class="label label-primary">Email Address:</span>
@@ -26,18 +26,38 @@
         <span class="label label-primary">Email Service:</span>
         <br />
         @(Html.Kendo().DropDownList()
-        .Name("EmailService")
+        .Name("EmailService").Events(e => e.Change("OnChange"))
                     .BindTo(new List<SelectListItem>()
                     {
                         new SelectListItem()
                         {
-                            Text="Gmail",
+                            Text="Other",
                             Value="0"
                         },
                         new SelectListItem()
                         {
-                            Text="Other really long test name",
+                            Text="Gmail",
                             Value="1"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "Yahoo",
+                            Value = "2"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "Outlook",
+                            Value = "3"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "AT&T",
+                            Value = "4"
+                        },
+                        new SelectListItem()
+                        {
+                            Text = "Verizon",
+                            Value = "5"
                         }
                     })
                     .Value("0")
@@ -61,3 +81,49 @@
     </div>
 </div>
 </div>
+<script>
+    function OnChange()
+    {
+        var serviceNumber = $('#EmailService').val();
+        switch(serviceNumber)
+        {
+            case "0":
+                $('#userSMTPServer').val("");
+                $("#userSMTPServer").attr("readonly", false);
+                $('#userSMTPPort').val("");
+                $("#userSMTPPort").attr("readonly", false);
+                break;
+            case "1":
+                $('#userSMTPServer').val("smtp.gmail.com");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#userSMTPPort').val("587");
+                $("#userSMTPPort").attr("readonly", true);
+                break;
+            case "2":
+                $('#userSMTPServer').val("smtp.mail.yahoo.com");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#userSMTPPort').val("465");
+                $("#userSMTPPort").attr("readonly", true);
+                break;
+            case "3":
+                $('#userSMTPServer').val("smtp.live.com");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#userSMTPPort').val("587");
+                $("#userSMTPPort").attr("readonly", true);
+                break;
+            case "4":
+                $('#userSMTPServer').val("smtp.att.yahoo.com");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#userSMTPPort').val("465");
+                $("#userSMTPPort").attr("readonly", true);
+                break;
+            case "5":
+                $('#userSMTPServer').val("outgoing.yahoo.verizon.net");
+                $("#userSMTPServer").attr("readonly", true);
+                $('#userSMTPPort').val("587");
+                $("#userSMTPPort").attr("readonly", true);
+                break;
+
+        }
+    }
+</script>

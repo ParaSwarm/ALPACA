@@ -87,7 +87,8 @@ namespace ALPACA.Web.Controllers
                                 emailPassword = CurrentUser.EmailPassword,
                                 emailServer = CurrentUser.EmailServer,
                                 emailPort = CurrentUser.EmailPort,
-                                pass = CurrentUser.AccountPassword});
+                                pass = CurrentUser.AccountPassword,
+                                adminFlag = CurrentUser.AdminFlag});
         }
         public JsonResult GetUserByName(string username)
         {
@@ -99,11 +100,12 @@ namespace ALPACA.Web.Controllers
                                 emailPassword = user.EmailPassword,
                                 emailServer = user.EmailServer,
                                 emailPort = user.EmailPort,
-                                pass = user.AccountPassword});
+                                pass = user.AccountPassword,
+                                adminFlag = user.AdminFlag});
 
         }
         public JsonResult SaveUserInfo(string username, string email, string fName, string lName, string pass,
-                                        string emailPass, string emailServer, string emailPort)
+                                        string emailPass, string emailServer, string emailPort, bool adminFlag)
         {
             AlpacaUser userBeingUpdated = null;
             if(username == CurrentUser.AccountName)
@@ -115,6 +117,7 @@ namespace ALPACA.Web.Controllers
                 CurrentUser.AccountPassword = pass;
                 CurrentUser.EmailServer = emailServer;
                 CurrentUser.EmailPort = emailPort;
+                CurrentUser.AdminFlag = adminFlag;
                 MainBusiness.SaveUser(CurrentUser);
                 return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.AccountName) });
             }
@@ -133,6 +136,7 @@ namespace ALPACA.Web.Controllers
                 newUser.AccountPassword = pass;
                 newUser.EmailServer = emailServer;
                 newUser.EmailPort = emailPort;
+                newUser.AdminFlag = adminFlag;
                 MainBusiness.SaveUser(newUser);
 
             }
@@ -146,6 +150,7 @@ namespace ALPACA.Web.Controllers
                 userBeingUpdated.AccountPassword = pass;
                 userBeingUpdated.EmailServer = emailServer;
                 userBeingUpdated.EmailPort = emailPort;
+                userBeingUpdated.AdminFlag = adminFlag;
                 MainBusiness.SaveUser(userBeingUpdated);
             }
 

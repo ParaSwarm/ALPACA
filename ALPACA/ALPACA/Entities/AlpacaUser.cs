@@ -13,6 +13,7 @@ namespace ALPACA.Entities
         public virtual string EmailPassword { get; set; }
         public virtual string EmailServer{ get; set; }
         public virtual string EmailPort{ get; set; }
+        public virtual bool AdminFlag { get; set; }
         
         public virtual IList<string> Contacts { get; set; }
     }

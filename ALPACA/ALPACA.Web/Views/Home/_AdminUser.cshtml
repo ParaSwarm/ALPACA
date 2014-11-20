@@ -80,6 +80,25 @@
             <input id="userSMTPServer" class="form-control" />
         </div>
         <div class="col-md-6">
+            <span class="label label-primary" id="AdminLabel">Administrator Privileges:</span><br />
+            @(Html.Kendo().DropDownList()
+            .Name("AdminDropdown")
+                    .BindTo(new List<SelectListItem>()
+                    {
+                        new SelectListItem()
+                        {
+                            Text="False",
+                            Value="0"
+                        },
+                        new SelectListItem()
+                        {
+                            Text="True",
+                            Value="1"
+                        },
+                    })
+                    .Value("0")
+            )
+
         </div>
         <div class="col-md-6">
             <span class="label label-primary" id="PortLabel">SMTP Port:</span>
@@ -166,6 +185,15 @@
         var emailPass = $('#userEmailPassword').val();
         var emailServer = $('#userSMTPServer').val();
         var emailPort = $('#userSMTPPort').val();
+        var adminFlag = $('#AdminDropdown').val();
+        if (adminFlag == "1")
+        {
+            adminFlag = true;
+        }
+        else
+        {
+            adminFlag = false;
+        }
         $.post('@Url.Action("SaveUserInfo")',
             {
                 username: username,
@@ -175,7 +203,8 @@
                 pass: pass,
                 emailPass: emailPass,
                 emailServer: emailServer,
-                emailPort: emailPort
+                emailPort: emailPort,
+                adminFlag: adminFlag
             }, function (data) {
                 alert("User info saved");
                 $('#usersListbox').empty();
@@ -216,6 +245,7 @@
                 $('#userPassword').val("");
                 $('#userSMTPServer').val("");
                 $('#userSMTPPort').val("");
+                $('#AdminDropdown').data("kendoDropDownList").select(0);
             });
 
     }
@@ -231,6 +261,7 @@
             $('#userPassword').val("");
             $('#userSMTPServer').val("");
             $('#userSMTPPort').val("");
+            $('#AdminDropdown').data("kendoDropDownList").select(0);
             return true;
         }
         $.post('@Url.Action("GetUserByName")',
@@ -244,6 +275,15 @@
                     $('#userPassword').val(data.pass);
                     $('#userSMTPServer').val(data.emailServer);
                     $('#userSMTPPort').val(data.emailPort);
+                    if (data.adminFlag)
+                    {
+                        $('#AdminDropdown').data("kendoDropDownList").select(1);
+                    }
+                    else
+                    {
+                        $('#AdminDropdown').data("kendoDropDownList").select(0);
+                    }
+
                 });
     }
     $(document).ready(function ()

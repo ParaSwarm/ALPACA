@@ -63,12 +63,13 @@ namespace ALPACA.Web.Controllers
                 StreamReader reader = new StreamReader(file.InputStream);
                 string stringFromFile = reader.ReadToEnd();
                 IList<string> fileContents = stringFromFile.Split('\n').ToList();
+                //previous call always adds an empty string to the list, getting rid of it here
+                fileContents.RemoveAt(fileContents.Count - 1);
 
                 switch (uploadType)
                 {
                     case UploadType.Add:
-                        var lol = new List<string> { "Dave@dave.com", "steve&steve.com", "mel@mel.com" };
-                        result += MainBusiness.AddToList(lol);
+                        result += MainBusiness.AddToList(fileContents);
                         break;
                     case UploadType.Remove:
                         result += MainBusiness.RemoveFromList(fileContents);

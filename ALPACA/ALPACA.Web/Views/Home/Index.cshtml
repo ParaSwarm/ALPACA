@@ -14,8 +14,17 @@
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="listManagement"><br />@{ Html.RenderPartial("_Files"); }</div>
-                <div role="tabpanel" class="tab-pane" id="userManagement"><br />@{Html.RenderPartial("_AdminUser", Model.Users);}</div>
+                <div role="tabpanel" class="tab-pane" id="userManagement"><br />@{if(ViewBag.IsAdmin)
+                                                                                      {
+                                                                                         Html.RenderPartial("_AdminUser", Model.Users);
+                                                                                      }
+                                                                                      else
+                                                                                      {
+                                                                                          Html.RenderPartial("_User");
+                                                                                      }
+                                                                                      }
+                   </div>
+                </div>
             </div>
         </div>
     </div>
-</div>

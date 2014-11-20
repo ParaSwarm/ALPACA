@@ -31,7 +31,7 @@ namespace ALPACA.Web.Controllers
                     Users = MainBusiness.GetUsers().Select(x =>x.AccountName)
                 }
             };
-
+            ViewBag.IsAdmin = CurrentUser.AdminFlag;
             return View(model);
         }
 

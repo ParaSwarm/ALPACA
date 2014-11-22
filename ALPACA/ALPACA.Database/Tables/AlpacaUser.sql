@@ -10,5 +10,5 @@
     [EmailServer] NVARCHAR(50) NULL, 
     [EmailPort] NVARCHAR(50) NULL, 
     [AccountPassword] NVARCHAR(50) NULL, 
-    [AdminFlag] BIT NOT NULL
+    [AdminFlag] BIT NOT NULL DEFAULT(0)
 )

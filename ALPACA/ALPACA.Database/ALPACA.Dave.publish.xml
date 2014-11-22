@@ -6,5 +6,7 @@
     <DeployScriptFileName>ALPACA.Database.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=PARASWARM-PC;Integrated Security=True;Pooling=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
+    <ScriptDatabaseOptions>True</ScriptDatabaseOptions>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
   </PropertyGroup>
 </Project>

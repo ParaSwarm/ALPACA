@@ -6,11 +6,11 @@ namespace ALPACA
 {
     public static class EmailComposer
     {
-        public static void SendEmail(AlpacaUser currentUser, string emailBody)
+        public static void SendEmail(AlpacaUser currentUser, string subject, string emailBody)
         {
-            var fromAddress = new MailAddress("kodamn@gmail.com", "Dave the Rave");
+            var fromAddress = new MailAddress(currentUser.Email);
             string fromPassword = currentUser.EmailPassword;
-            string subject = "Subject";
+            
 
             var smtp = new SmtpClient
             {

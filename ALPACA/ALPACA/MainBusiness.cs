@@ -108,7 +108,7 @@ namespace ALPACA
         }
         public string SendEmail(string emailBody)
         {
-            EmailComposer.SendEmail(CurrentUser.Value, emailBody);
+            EmailComposer.SendEmail(CurrentUser.Value, "subject", emailBody);
 
             return "deleted";
         }

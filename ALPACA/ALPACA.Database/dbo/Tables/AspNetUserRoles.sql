@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[AspNetUserRoles] (
+    [UserId] NVARCHAR (255) NOT NULL,
+    [RoleId] NVARCHAR (255) NOT NULL,
+    CONSTRAINT [FK86803B282B87AB2A] FOREIGN KEY ([RoleId]) REFERENCES [dbo].[AspNetRoles] ([Id]),
+    CONSTRAINT [FK86803B28EA778823] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id])
+);
+

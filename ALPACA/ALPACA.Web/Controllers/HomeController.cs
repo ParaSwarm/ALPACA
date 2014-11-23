@@ -1,4 +1,5 @@
 ﻿using ALPACA.Entities;
+using ALPACA.Web.Controllers.Base;
 using ALPACA.Web.ViewModels;
 using Ninject;
 using System.Collections.Generic;
@@ -9,12 +10,10 @@ using System.Web.Mvc;
 
 namespace ALPACA.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ValidateInput(false)]
-    public class HomeController : Controller
+    public class HomeController : AlpacaControllerBase
     {
-        [Inject]
-        public AlpacaUser CurrentUser { get; set; }
         [Inject]
         public IMainBusiness MainBusiness { get; set; }
 
@@ -28,7 +27,7 @@ namespace ALPACA.Web.Controllers
                 },
                 Users = new UserViewModel
                 {
-                    Users = MainBusiness.GetUsers().Select(x =>x.AccountName)
+                    Users = MainBusiness.GetUsers().Select(x  => x.UserName)
                 }
             };
             ViewBag.IsAdmin = CurrentUser.AdminFlag;
@@ -69,10 +68,10 @@ namespace ALPACA.Web.Controllers
                 switch (uploadType)
                 {
                     case UploadType.Add:
-                        result += MainBusiness.AddToList(fileContents);
+                        result += MainBusiness.AddToList(CurrentUser.Id, fileContents);
                         break;
                     case UploadType.Remove:
-                        result += MainBusiness.RemoveFromList(fileContents);
+                        result += MainBusiness.RemoveFromList(CurrentUser.Id, fileContents);
                         break;
                 }
             }
@@ -81,46 +80,48 @@ namespace ALPACA.Web.Controllers
         }
         public JsonResult GetUserInfo()
         {
-            return Json(new {userName = CurrentUser.AccountName, 
+            return Json(new
+            {
+                userName = CurrentUser.UserName, 
                                 fName = CurrentUser.FirstName, 
                                 lName = CurrentUser.LastName, 
                                 email = CurrentUser.Email,
                                 emailPassword = CurrentUser.EmailPassword,
                                 emailServer = CurrentUser.EmailServer,
                                 emailPort = CurrentUser.EmailPort,
-                                pass = CurrentUser.AccountPassword,
+                             pass = CurrentUser.PasswordHash,
                                 adminFlag = CurrentUser.AdminFlag});
         }
         public JsonResult GetUserByName(string username)
         {
-            var user = MainBusiness.GetUser(username);
-            return Json(new {userName = user.AccountName, 
-                                fName = user.FirstName, 
-                                lName = user.LastName, 
-                                email = user.Email,
-                                emailPassword = user.EmailPassword,
-                                emailServer = user.EmailServer,
-                                emailPort = user.EmailPort,
-                                pass = user.AccountPassword,
-                                adminFlag = user.AdminFlag});
+            return Json(new {userName = CurrentUser.UserName,
+                             fName = CurrentUser.FirstName,
+                             lName = CurrentUser.LastName,
+                             email = CurrentUser.Email,
+                             emailPassword = CurrentUser.EmailPassword,
+                             emailServer = CurrentUser.EmailServer,
+                             emailPort = CurrentUser.EmailPort,
+                             pass = CurrentUser.PasswordHash,
+                             adminFlag = CurrentUser.AdminFlag
+            });
 
         }
         public JsonResult SaveUserInfo(string username, string email, string fName, string lName, string pass,
                                         string emailPass, string emailServer, string emailPort, bool adminFlag)
         {
             AlpacaUser userBeingUpdated = null;
-            if(username == CurrentUser.AccountName)
+            if (username == CurrentUser.UserName)
             {
                 CurrentUser.Email = email;
                 CurrentUser.EmailPassword = emailPass;
                 CurrentUser.FirstName = fName;
                 CurrentUser.LastName = lName;
-                CurrentUser.AccountPassword = pass;
+                CurrentUser.PasswordHash = pass;
                 CurrentUser.EmailServer = emailServer;
                 CurrentUser.EmailPort = emailPort;
                 CurrentUser.AdminFlag = adminFlag;
                 MainBusiness.SaveUser(CurrentUser);
-                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.AccountName) });
+                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
             }
             else
             {
@@ -129,12 +130,12 @@ namespace ALPACA.Web.Controllers
             if(userBeingUpdated == null)
             {
                 AlpacaUser newUser = new AlpacaUser();
-                newUser.AccountName = username;
+                newUser.UserName = username;
                 newUser.Email = email;
                 newUser.EmailPassword = emailPass;
                 newUser.FirstName = fName;
                 newUser.LastName = lName;
-                newUser.AccountPassword = pass;
+                newUser.PasswordHash = pass;
                 newUser.EmailServer = emailServer;
                 newUser.EmailPort = emailPort;
                 newUser.AdminFlag = adminFlag;
@@ -143,27 +144,27 @@ namespace ALPACA.Web.Controllers
             }
             else
             {
-                userBeingUpdated.AccountName = username;
+                userBeingUpdated.UserName = username;
                 userBeingUpdated.Email = email;
                 userBeingUpdated.EmailPassword = emailPass;
                 userBeingUpdated.FirstName = fName;
                 userBeingUpdated.LastName = lName;
-                userBeingUpdated.AccountPassword = pass;
+                userBeingUpdated.PasswordHash = pass;
                 userBeingUpdated.EmailServer = emailServer;
                 userBeingUpdated.EmailPort = emailPort;
                 userBeingUpdated.AdminFlag = adminFlag;
                 MainBusiness.SaveUser(userBeingUpdated);
             }
 
-            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.AccountName) });
+            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
         }
+
         public JsonResult DeleteUser(string username)
         {
             var user = MainBusiness.GetUser(username);
             MainBusiness.DeleteUser(user);
-            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.AccountName) });
+            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
         }
-
     }
 
     public enum UploadType
@@ -171,5 +172,4 @@ namespace ALPACA.Web.Controllers
         Add,
         Remove
     }
-
 }

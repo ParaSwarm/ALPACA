@@ -1,6 +1,5 @@
 ﻿using ALPACA.Entities;
 using NHibernate;
-using NHibernate.Exceptions;
 using Ninject;
 using System.Collections.Generic;
 
@@ -13,12 +12,12 @@ namespace ALPACA
         [Inject]
         public ISession Session { get; set; }
 
-        public AlpacaUser GetUser(string accountName)
+        public AlpacaUser GetUser(string userName)
         {
-            return Session.QueryOver<AlpacaUser>().Where(x => x.AccountName == accountName).SingleOrDefault();
+            return Session.QueryOver<AlpacaUser>().Where(x => x.UserName == userName).SingleOrDefault();
         }
 
-        public IEnumerable<EmailDraft> GetDrafts(int userId)
+        public IEnumerable<EmailDraft> GetDrafts(string userId)
         {
             return Session.QueryOver<EmailDraft>().Where(x => x.UserId == userId).List();
         }
@@ -27,7 +26,7 @@ namespace ALPACA
             return Session.QueryOver<AlpacaUser>().List();
         }
 
-        public string GetDraftBody(int userId, string draftName)
+        public string GetDraftBody(string userId, string draftName)
         {
             return Session.QueryOver<EmailDraft>()
                             .Where(x => x.UserId == userId)
@@ -35,16 +34,15 @@ namespace ALPACA
                             .SingleOrDefault().Body;
         }
 
-        public string SaveDraft(int userId, string draftName, string draftBody)
+        public string SaveDraft(string userId, string draftName, string draftBody)
         {
             EmailDraft draft = Session.QueryOver<EmailDraft>()
                                                 .Where(x => x.Name == draftName).SingleOrDefault();
             if(draft != null)
             {
-                if(draftBody =="")//empty body indicates user wishes to delete draft
+                if(draftBody == string.Empty)   //empty body indicates user wishes to delete draft
                 {
                     Session.Delete(draft);
-                    Session.Flush();
                 }
                 else
                 {
@@ -63,10 +61,12 @@ namespace ALPACA
             return "success";
         }
 
-        public string DeleteDraft(int userId, string draftName)
+        public string DeleteDraft(string userId, string draftName)
         {
             EmailDraft draft = Session.QueryOver<EmailDraft>()
-                                                .Where(x => x.Name == draftName).SingleOrDefault();
+                                    .Where(x => x.UserId == userId)
+                                    .And(x => x.Name == draftName)
+                                    .SingleOrDefault();
             if(draft != null)
             {
                 Session.Delete(draft);
@@ -76,14 +76,14 @@ namespace ALPACA
             return "fail";
         }
 
-        public string AddToList(IList<string> listToAdd)
+        public string AddToList(string userId, IList<string> listToAdd)
         {
             //ListManager.MergeList(listToAdd);
 
             return "";
         }
 
-        public string RemoveFromList(IList<string> listToRemove)
+        public string RemoveFromList(string userId, IList<string> listToRemove)
         {
             //ListManageer.RemoveList(listToAdd);
 
@@ -92,27 +92,28 @@ namespace ALPACA
         public string SaveUser(AlpacaUser user)
         {
             Session.SaveOrUpdate(user);
+
             return "yaaaay";
         }
         public string DeleteUser(AlpacaUser user)
         {
             Session.Delete(user);
+
             return "deleted";
         }
     }
 
     public interface IMainBusiness
     {
-        AlpacaUser GetUser(string loginName);
-        IEnumerable<EmailDraft> GetDrafts(int userId);
-        string GetDraftBody(int userId, string draftName);
-        string SaveDraft(int userId, string draftName, string draftBody);
-        string DeleteDraft(int userId, string draftName);
-        string AddToList(IList<string> listToAdd);
-        string RemoveFromList(IList<string> listToRemove);
+        AlpacaUser GetUser(string userName);
+        IEnumerable<EmailDraft> GetDrafts(string userId);
+        string GetDraftBody(string userId, string draftName);
+        string SaveDraft(string userId, string draftName, string draftBody);
+        string DeleteDraft(string userId, string draftName);
+        string AddToList(string userId, IList<string> listToAdd);
+        string RemoveFromList(string userId, IList<string> listToRemove);
         string SaveUser(AlpacaUser user);
         string DeleteUser(AlpacaUser user);
         IEnumerable<AlpacaUser> GetUsers();
-
     }
 }

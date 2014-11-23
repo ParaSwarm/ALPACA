@@ -47,8 +47,14 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.3.3.1.4000\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.AspNet.Identity">
+      <HintPath>..\packages\NHibernate.AspNet.Identity.1.0.4000\lib\net45\NHibernate.AspNet.Identity.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
@@ -69,9 +75,10 @@
   <ItemGroup>
     <Compile Include="AlpacaDatabaseFactory.cs" />
     <Compile Include="Entities\EmailDraft.cs" />
-    <Compile Include="Entities\AlpacaUser.cs" />
+    <Compile Include="AlpacaUser.cs" />
     <Compile Include="ListManager.cs" />
     <Compile Include="MainBusiness.cs" />
+    <Compile Include="Mappings\AlpacaUserMap.cs" />
     <Compile Include="Mappings\AutoMappingConfiguration.cs" />
     <Compile Include="Mappings\CustomForeignKeyConvention.cs" />
     <Compile Include="Mappings\NHibernateDelimitedList.cs" />

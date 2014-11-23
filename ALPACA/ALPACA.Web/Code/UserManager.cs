@@ -22,11 +22,15 @@ namespace ALPACA.Web.Code
 
                 if (_currentUser != null) return _currentUser;
 
-                _currentUser = MainBusiness.GetUser("dselinger");
-                
-                HttpContext.Session["CurrentUser"] = _currentUser;
-
-
+                _currentUser = MainBusiness.GetUser(HttpContext.User.Identity.Name);
+                if (_currentUser == null)
+                {
+                    _currentUser = new AlpacaUser();
+                }
+                else
+                {
+                    HttpContext.Session["CurrentUser"] = _currentUser;
+                }
 
                 return _currentUser;
             }

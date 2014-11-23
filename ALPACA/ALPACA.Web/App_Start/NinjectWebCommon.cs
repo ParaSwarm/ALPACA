@@ -66,11 +66,12 @@ namespace ALPACA.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<ISessionFactory>().ToMethod(c => AlpacaDatabaseFactory.CreateSessionFactory()).InSingletonScope();
-            kernel.Bind<ISession>().ToMethod(c => kernel.Get<ISessionFactory>().OpenSession()).InRequestScope();
+            //kernel.Bind<ISessionFactory>().ToMethod(c => AlpacaDatabaseFactory.CreateSessionFactory()).InSingletonScope();
+            kernel.Bind<ISession>().ToMethod(c => AlpacaDatabaseFactory.SessionFactory.OpenSession()).InRequestScope();
             kernel.Bind<IMainBusiness>().To<MainBusiness>().InRequestScope();
             kernel.Bind<UserManager>().ToSelf().InRequestScope();
             kernel.Bind<AlpacaUser>().ToMethod(c => kernel.Get<UserManager>().CurrentUser).InRequestScope();
+            kernel.Bind<IAlpacaPrincipal>().ToMethod(c => kernel.Get<HttpContextBase>().User as AlpacaPrincipal).InRequestScope();
             kernel.Bind<HttpContextBase>().ToMethod(c => new HttpContextWrapper(HttpContext.Current)).InRequestScope();
 
             kernel.BindFilter<UnitOfWorkFilter>(System.Web.Mvc.FilterScope.Controller, 0).InRequestScope();

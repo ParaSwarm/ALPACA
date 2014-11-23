@@ -206,7 +206,7 @@
                 emailPort: emailPort,
                 adminFlag: adminFlag
             }, function (data) {
-                alert("User info saved");
+                toastr.success("User info saved")
                 $('#usersListbox').empty();
                 var html = '';
                 $('#usersListbox').append($('<option></option>').text("New User").val(""));

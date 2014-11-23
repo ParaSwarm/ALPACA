@@ -22,7 +22,7 @@ namespace ALPACA
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
             };
 
-            using (var message = new MailMessage { From = fromAddress, Subject = subject, Body = emailBody })
+            using (var message = new MailMessage { From = fromAddress, Subject = subject, Body = emailBody, IsBodyHtml = true })
             {
                 foreach (var contact in currentUser.Contacts)
                     message.To.Add(contact);

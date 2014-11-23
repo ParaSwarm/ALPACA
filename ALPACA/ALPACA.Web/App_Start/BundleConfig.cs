@@ -9,7 +9,9 @@ namespace ALPACA.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/alpaca.js",
+                        "~/Scripts/toastr.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -31,6 +33,7 @@ namespace ALPACA.Web
                         "~/Content/bootstrap.css",
                         "~/Content/kendo.common.min.css",
                         "~/Content/kendo.bootstrap.min.css",
+                        "~/Content/toastr.css",
                         "~/Content/Site.css"));
 
             // Set EnableOptimizations to false for debugging. For more information,

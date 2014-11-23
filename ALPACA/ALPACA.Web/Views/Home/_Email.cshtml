@@ -1,19 +1,19 @@
 ﻿@model ALPACA.Web.ViewModels.EmailViewModel
 <div class="container-fluid">
-<div class="row">
-    <div class="col-md-12">
-        @Html.Kendo().EditorFor(m => m.EmailBody)
+    <div class="row">
+        <div class="col-md-12">
+            @Html.Kendo().EditorFor(m => m.EmailBody)
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-2 col-sm-push-4 col-lg-push-2 col-xs-12">
-        @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new {@style = "font-size:14px;", @onchange = "loadDraft(this);", @id = "draftDropdown", @class="form-control btn-default" })
-    </div>
+    <div class="row">
+        <div class="col-sm-2 col-sm-push-4 col-lg-push-2 col-xs-12">
+            @Html.DropDownListFor(m => m.SelectedDraft, new SelectList(Model.DraftNames), "Load Draft..", new { @style = "font-size:14px;", @onchange = "loadDraft(this);", @id = "draftDropdown", @class = "form-control btn-default" })
+        </div>
         <span class="col-sm-2 col-lg-1 col-sm-pull-2">
             <button id="saveDraftButton" onclick="saveDraft('');" class="btn btn-primary btn-block">Save</button>
         </span>
         <span class=" col-sm-2 col-lg-1 col-sm-pull-2">
-            <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-danger btn-block" >Delete</button>
+            <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-danger btn-block">Delete</button>
         </span>
         <span class="col-sm-2 col-sm-offset-2 col-lg-offset-4 col-xs-offset-0">
             <button id="attachFile" class="btn btn-default btn-block">Attach File</button>
@@ -21,7 +21,7 @@
         <span class="col-sm-2 col-sm-offset-0">
             <button id="sendEmail" class="btn btn-success btn-block">Send Email</button>
         </span>
-</div>
+    </div>
 </div>
 <script type="text/javascript">
     function loadDraft(e) {
@@ -36,16 +36,13 @@
         }
     }
 
-    function saveDraft(dName)
-    {
+    function saveDraft(dName) {
         var draftBody = $('#EmailBody').data('kendoEditor').value();
         var draftName = dName;
-        if(draftName.length == 0)
-        {
+        if (draftName.length == 0) {
             var draftName = $('#draftDropdown').val();
         }
-        if (draftName.length == 0)
-        {
+        if (draftName.length == 0) {
             $('#modalName').val("");
             $('#modal-dialog').modal('show')
             return;
@@ -54,7 +51,7 @@
             '@Url.Action("SaveDraft")',
             { draftName: draftName, draftBody: draftBody },
             function (data) {
-                alert("Draft Saved");
+                toastr.success("Draft Saved");
                 $('#draftDropdown').empty();
                 var html = '';
                 $('#draftDropdown').append($('<option></option>').text("").val(""));
@@ -62,28 +59,24 @@
                     $('#draftDropdown').append($('<option></option>').text(val.Name).val(val.Name));/* added "val()" also*/
                 });
                 $.each(data.draftNames,
-                    function (index, value)
-                    {
-                        if (value.Name == draftName)
-                        {
+                    function (index, value) {
+                        if (value.Name == draftName) {
                             $('#draftDropdown').val(value.Name);
                         }
                     });
-            } 
+            }
     )
     };
-    function deleteDraft()
-    {
+    function deleteDraft() {
         var draftName = $('#draftDropdown').val();
-        if(draftName.length == 0)
-        {
+        if (draftName.length == 0) {
             return;
         }
         $.post(
             '@Url.Action("DeleteDraft")',
             { draftName: draftName },
             function (data) {
-                alert("Draft Deleted");
+                toastr.success("Draft Deleted");
                 $('#draftDropdown').empty();
                 var html = '';
                 $('#draftDropdown').append($('<option></option>').text("").val(""));
@@ -94,16 +87,13 @@
             })
         $('#EmailBody').data('kendoEditor').value("");
 
-        }
-    
-    
-    function getModalName()
-    {
+    }
+
+    function getModalName() {
         var draftName = $('#modalName').val();
         $('#modal-dialog').modal('hide');
-        if (draftName == "")
-        {
-            alert("Draft not saved, you must enter a name.");
+        if (draftName == "") {
+            toastr.error("Draft not saved. You must enter a name.");
             return;
         }
         saveDraft(draftName);
@@ -129,7 +119,7 @@
             </div>
             <div class="modal-body">
                 <p>Please enter a name for your draft&hellip;</p>
-                <input type="text" class="form-control" placeholder="Draft Name" id="modalName" >
+                <input type="text" class="form-control" placeholder="Draft Name" id="modalName">
             </div>
             <div class="modal-footer">
                 <button type="button" id="modalButton" class="btn btn-success" onclick="getModalName();">Save draft</button>

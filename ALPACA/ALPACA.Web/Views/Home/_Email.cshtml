@@ -19,7 +19,7 @@
             <button id="attachFile" class="btn btn-default btn-block">Attach File</button>
         </span>
         <span class="col-sm-2 col-sm-offset-0">
-            <button id="sendEmail" class="btn btn-success btn-block">Send Email</button>
+            <button id="sendEmail" onclick="sendEmail();" class=" btn btn-success btn-block">Send Email</button>
         </span>
     </div>
 </div>
@@ -107,8 +107,22 @@
         $('#modal-dialog').on('shown.bs.modal.', function () {
             $('#modalName').focus();
         });
-
     });
+
+    function sendEmail() {
+        var emailBody = $('#EmailBody').data('kendoEditor').value();
+        if (!emailBody.length) {
+            toastr.warning('Please enter a body for your email.');
+            return;
+        }
+
+        $.post(
+           '@Url.Action("SendEmail")',
+           { emailBody: emailBody },
+           function (data) {
+               toastr.success("Email successfully sent!");
+           })
+    }
 
 </script>
 <div class="modal fade" id="modal-dialog">

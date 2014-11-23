@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlpacaDatabaseFactory.cs" />
+    <Compile Include="EmailComposer.cs" />
     <Compile Include="Entities\EmailDraft.cs" />
     <Compile Include="AlpacaUser.cs" />
     <Compile Include="ListManager.cs" />

@@ -23,7 +23,7 @@ namespace ALPACA.Web.Controllers
             {
                 Email = new EmailViewModel
                 {
-                    DraftNames = MainBusiness.GetDrafts(CurrentUser.Id).Select(x => x.Name)
+                    DraftNames = MainBusiness.GetDrafts().Select(x => x.Name)
                 },
                 Users = new UserViewModel
                 {
@@ -36,21 +36,21 @@ namespace ALPACA.Web.Controllers
 
         public string GetDraftBody(string draftName)
         {
-            return MainBusiness.GetDraftBody(CurrentUser.Id, draftName);
+            return MainBusiness.GetDraftBody(draftName);
         }
         [HttpPost]
         public JsonResult SaveDraft(string draftName, string draftBody)
         {
-            MainBusiness.SaveDraft(CurrentUser.Id, draftName, draftBody);
+            MainBusiness.SaveDraft(draftName, draftBody);
 
-            return Json(new { draftNames = MainBusiness.GetDrafts(CurrentUser.Id) });
+            return Json(new { draftNames = MainBusiness.GetDrafts() });
         }
         [HttpPost]
         public JsonResult DeleteDraft(string draftName)
         {
-            MainBusiness.DeleteDraft(CurrentUser.Id, draftName);
+            MainBusiness.DeleteDraft(draftName);
 
-            return Json(new { draftNames = MainBusiness.GetDrafts(CurrentUser.Id) });
+            return Json(new { draftNames = MainBusiness.GetDrafts() });
         }
 
         public JsonResult UploadFile(IEnumerable<HttpPostedFileBase> files, UploadType uploadType)
@@ -68,10 +68,10 @@ namespace ALPACA.Web.Controllers
                 switch (uploadType)
                 {
                     case UploadType.Add:
-                        result += MainBusiness.AddToList(CurrentUser.Id, fileContents);
+                        result += MainBusiness.AddToList(fileContents);
                         break;
                     case UploadType.Remove:
-                        result += MainBusiness.RemoveFromList(CurrentUser.Id, fileContents);
+                        result += MainBusiness.RemoveFromList(fileContents);
                         break;
                 }
             }
@@ -164,6 +164,16 @@ namespace ALPACA.Web.Controllers
             var user = MainBusiness.GetUser(username);
             MainBusiness.DeleteUser(user);
             return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
+        }
+
+        public JsonResult SendEmail(string emailBody)
+        {
+            if(string.IsNullOrWhiteSpace(emailBody))
+                return Json(new { success = false });
+
+            var emailSent = MainBusiness.SendEmail(emailBody);
+
+            return Json(new { success = true });
         }
     }
 

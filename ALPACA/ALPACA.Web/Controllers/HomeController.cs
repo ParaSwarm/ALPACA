@@ -94,15 +94,16 @@ namespace ALPACA.Web.Controllers
         }
         public JsonResult GetUserByName(string username)
         {
-            return Json(new {userName = CurrentUser.UserName,
-                             fName = CurrentUser.FirstName,
-                             lName = CurrentUser.LastName,
-                             email = CurrentUser.Email,
-                             emailPassword = CurrentUser.EmailPassword,
-                             emailServer = CurrentUser.EmailServer,
-                             emailPort = CurrentUser.EmailPort,
-                             pass = CurrentUser.PasswordHash,
-                             adminFlag = CurrentUser.AdminFlag
+            var user = MainBusiness.GetUser(username);
+            return Json(new {userName = user.UserName,
+                             fName = user.FirstName,
+                             lName = user.LastName,
+                             email = user.Email,
+                             emailPassword = user.EmailPassword,
+                             emailServer = user.EmailServer,
+                             emailPort = user.EmailPort,
+                             pass = user.PasswordHash,
+                             adminFlag = user.AdminFlag
             });
 
         }

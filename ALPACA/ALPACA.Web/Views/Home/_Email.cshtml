@@ -2,6 +2,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
+            <span class="label label-primary">Subject:</span>
+            <input id="emailSubject" class="form-control" /> 
+        </div>
+        <div class="col-md-12">
             @Html.Kendo().EditorFor(m => m.EmailBody)
         </div>
     </div>
@@ -64,9 +68,8 @@
                             $('#draftDropdown').val(value.Name);
                         }
                     });
-            }
-    )
-    };
+            });
+    }
     function deleteDraft() {
         var draftName = $('#draftDropdown').val();
         if (draftName.length == 0) {
@@ -111,18 +114,24 @@
 
     function sendEmail() {
         var emailBody = $('#EmailBody').data('kendoEditor').value();
+        var emailSubject = $("#emailSubject").val();
         if (!emailBody.length) {
             toastr.warning('Please enter a body for your email.');
             return;
         }
+        if (!emailSubject.length)
+        {
+            emailSubject = "(no subject)";
+        }
 
         $.post(
            '@Url.Action("SendEmail")',
-           { emailBody: emailBody },
+           { emailBody: emailBody , emailSubject:emailSubject },
            function (data) {
                toastr.success("Email successfully sent!");
-           })
+           });
     }
+    
 
 </script>
 <div class="modal fade" id="modal-dialog">

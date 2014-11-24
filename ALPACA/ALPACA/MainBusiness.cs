@@ -106,9 +106,9 @@ namespace ALPACA
 
             return "deleted";
         }
-        public string SendEmail(string emailBody)
+        public string SendEmail(string emailBody, string emailSubject)
         {
-            EmailComposer.SendEmail(CurrentUser.Value, "subject", emailBody);
+            EmailComposer.SendEmail(CurrentUser.Value, emailSubject, emailBody);
 
             return "deleted";
         }
@@ -126,6 +126,6 @@ namespace ALPACA
         string SaveUser(AlpacaUser user);
         string DeleteUser(AlpacaUser user);
         IEnumerable<AlpacaUser> GetUsers();
-        string SendEmail(string emailBody);
+        string SendEmail(string emailBody, string emailSubject);
     }
 }

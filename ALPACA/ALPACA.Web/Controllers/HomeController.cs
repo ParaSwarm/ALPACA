@@ -167,12 +167,12 @@ namespace ALPACA.Web.Controllers
             return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
         }
 
-        public JsonResult SendEmail(string emailBody)
+        public JsonResult SendEmail(string emailBody, string emailSubject)
         {
             if(string.IsNullOrWhiteSpace(emailBody))
                 return Json(new { success = false });
 
-            var emailSent = MainBusiness.SendEmail(emailBody);
+            var emailSent = MainBusiness.SendEmail(emailBody, emailSubject);
 
             return Json(new { success = true });
         }

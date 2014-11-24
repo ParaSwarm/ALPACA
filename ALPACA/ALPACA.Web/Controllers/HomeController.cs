@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace ALPACA.Web.Controllers
 {
@@ -140,7 +141,9 @@ namespace ALPACA.Web.Controllers
                 newUser.EmailServer = emailServer;
                 newUser.EmailPort = emailPort;
                 newUser.AdminFlag = adminFlag;
-                MainBusiness.SaveUser(newUser);
+                var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var result = manager.CreateAsync(newUser, pass);
+                //MainBusiness.SaveUser(newUser);
 
             }
             else

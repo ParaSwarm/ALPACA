@@ -10,7 +10,7 @@ namespace ALPACA.Mappings
 {
     public class NHibernateDelimitedList : IUserType
     {
-        private const string delimiter = "|";
+        private const string delimiter = ",";
 
         public new bool Equals(object x, object y)
         {

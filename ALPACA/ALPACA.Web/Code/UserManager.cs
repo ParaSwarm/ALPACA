@@ -36,5 +36,9 @@ namespace ALPACA.Web.Code
             }
             set { }
         }
+        public void NullifySession()
+        {
+            HttpContext.Session.Abandon();
+        }
     }
 }

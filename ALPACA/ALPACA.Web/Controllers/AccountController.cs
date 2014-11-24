@@ -1,5 +1,6 @@
 ﻿using ALPACA.Entities;
 using ALPACA.Web.Models;
+using ALPACA.Web.Controllers.Base;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -11,7 +12,7 @@ using System.Web.Mvc;
 namespace ALPACA.Web.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : AlpacaControllerBase 
     {
         private ApplicationUserManager _userManager;
 
@@ -412,6 +413,8 @@ namespace ALPACA.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
+            AlpacaUserManager.NullifySession();
+            CurrentUser = null;
             return RedirectToAction("Index", "Home");
         }
 

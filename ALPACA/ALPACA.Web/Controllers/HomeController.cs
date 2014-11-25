@@ -108,55 +108,54 @@ namespace ALPACA.Web.Controllers
             });
 
         }
-        public JsonResult SaveUserInfo(string username, string email, string fName, string lName, string pass,
-                                        string emailPass, string emailServer, string emailPort, bool adminFlag)
+        public JsonResult SaveUserInfo(UserViewModel model)
         {
             AlpacaUser userBeingUpdated = null;
-            if (username == CurrentUser.UserName)
+            if (model.username == CurrentUser.UserName)
             {
-                CurrentUser.Email = email;
-                CurrentUser.EmailPassword = emailPass;
-                CurrentUser.FirstName = fName;
-                CurrentUser.LastName = lName;
-                CurrentUser.PasswordHash = pass;
-                CurrentUser.EmailServer = emailServer;
-                CurrentUser.EmailPort = emailPort;
-                CurrentUser.AdminFlag = adminFlag;
+                CurrentUser.Email = model.email;
+                CurrentUser.EmailPassword = model.emailPass;
+                CurrentUser.FirstName = model.fName;
+                CurrentUser.LastName = model.lName;
+                CurrentUser.PasswordHash = model.pass;
+                CurrentUser.EmailServer = model.emailServer;
+                CurrentUser.EmailPort = model.emailPort;
+                CurrentUser.AdminFlag = model.adminFlag;
                 MainBusiness.SaveUser(CurrentUser);
                 return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
             }
             else
             {
-            userBeingUpdated = MainBusiness.GetUser(username);
+            userBeingUpdated = MainBusiness.GetUser(model.username);
             }
             if(userBeingUpdated == null)
             {
                 AlpacaUser newUser = new AlpacaUser();
-                newUser.UserName = username;
-                newUser.Email = email;
-                newUser.EmailPassword = emailPass;
-                newUser.FirstName = fName;
-                newUser.LastName = lName;
-                newUser.PasswordHash = pass;
-                newUser.EmailServer = emailServer;
-                newUser.EmailPort = emailPort;
-                newUser.AdminFlag = adminFlag;
+                newUser.UserName = model.username;
+                newUser.Email = model.email;
+                newUser.EmailPassword = model.emailPass;
+                newUser.FirstName = model.fName;
+                newUser.LastName = model.lName;
+                newUser.PasswordHash = model.pass;
+                newUser.EmailServer = model.emailServer;
+                newUser.EmailPort = model.emailPort;
+                newUser.AdminFlag = model.adminFlag;
                 var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var result = manager.CreateAsync(newUser, pass);
+                var result = manager.CreateAsync(newUser, model.pass);
                 //MainBusiness.SaveUser(newUser);
 
             }
             else
             {
-                userBeingUpdated.UserName = username;
-                userBeingUpdated.Email = email;
-                userBeingUpdated.EmailPassword = emailPass;
-                userBeingUpdated.FirstName = fName;
-                userBeingUpdated.LastName = lName;
-                userBeingUpdated.PasswordHash = pass;
-                userBeingUpdated.EmailServer = emailServer;
-                userBeingUpdated.EmailPort = emailPort;
-                userBeingUpdated.AdminFlag = adminFlag;
+                userBeingUpdated.UserName = model.username;
+                userBeingUpdated.Email = model.email;
+                userBeingUpdated.EmailPassword = model.emailPass;
+                userBeingUpdated.FirstName = model.fName;
+                userBeingUpdated.LastName = model.lName;
+                userBeingUpdated.PasswordHash = model.pass;
+                userBeingUpdated.EmailServer = model.emailServer;
+                userBeingUpdated.EmailPort = model.emailPort;
+                userBeingUpdated.AdminFlag = model.adminFlag;
                 MainBusiness.SaveUser(userBeingUpdated);
             }
 

@@ -6,23 +6,27 @@ namespace ALPACA
 {
     public class ListManager
     {
-        private List<string> addressList;
+        public List<string> addressList { get; set; }
 
-        public void MergeList(List<string> inputList)
+        public List<string> MergeList(List<string> inputList)
         {
-            addressList.AddRange(inputList);
-            addressList.Sort();
+            return MergeList(addressList, inputList);
         }
-        public void MergeList(List<string> inputList1, List<string> inputList2)
+        public List<string> MergeList(List<string> inputList1, List<string> inputList2)
         {
             inputList1.AddRange(inputList2);
             inputList1.Sort();
-            ExportList(inputList1); 
+            return inputList1;
         }
-        public void RemoveList(List<string> inputList)
+        public List<string> RemoveList(List<string> inputList)
         {
-            addressList = addressList.Except(inputList).ToList();
-            addressList.Sort();
+            return RemoveList(addressList, inputList);
+        }
+        public List<string> RemoveList(List<string> finalList, List<string> listToRemove)
+        {
+            finalList = finalList.Except(listToRemove).ToList();
+            finalList.Sort();
+            return finalList;
         }
         public void ExportList()
         {

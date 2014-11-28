@@ -44,11 +44,4 @@
     {
         e.data = { uploadType: $("#UploadType").val() };
     }
-    function exportContacts() {
-        $.post('@Url.Action("ExportContacts")', {},
-            function () {
-                toastr.success("Contacts Exported");
-
-            });
-    }
 </script>

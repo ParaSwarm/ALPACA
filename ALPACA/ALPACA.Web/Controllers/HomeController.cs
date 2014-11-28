@@ -178,6 +178,11 @@ namespace ALPACA.Web.Controllers
 
             return Json(new { success = true });
         }
+        public FileResult ExportContacts()
+        {
+            string toExport = MainBusiness.ExportContacts();
+            return File(new System.Text.UTF8Encoding().GetBytes(toExport), "text/csv", "contacts.csv");
+        }
     }
 
     public enum UploadType

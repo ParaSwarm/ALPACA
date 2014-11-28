@@ -3,6 +3,7 @@ using NHibernate;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ALPACA
 {
@@ -110,7 +111,19 @@ namespace ALPACA
         {
             EmailComposer.SendEmail(CurrentUser.Value, emailSubject, emailBody);
 
-            return "deleted";
+            return "sent";
+        }
+        public string ExportContacts()
+        {
+            StringWriter output = new StringWriter();
+            List<string> currContacts =(List<string>)CurrentUser.Value.Contacts;
+            currContacts.Sort();
+            foreach(var contact in currContacts)
+            {
+                output.WriteLine(contact);
+            }
+
+            return output.ToString(); 
         }
     }
 
@@ -127,5 +140,6 @@ namespace ALPACA
         string DeleteUser(AlpacaUser user);
         IEnumerable<AlpacaUser> GetUsers();
         string SendEmail(string emailBody, string emailSubject);
+        string ExportContacts();
     }
 }

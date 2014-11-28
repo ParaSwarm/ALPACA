@@ -31,6 +31,11 @@
                     .Value("0")
                     )
             </div>
+            <div class="col-md-7">
+            </div>
+            <div class="col-md-3">
+                <button id="exportButton" onclick="location.href='@Url.Action("ExportContacts")'" class="btn btn-block btn-primary">Export Contacts</button>
+            </div>
     </div>
 </div>
 
@@ -38,5 +43,12 @@
     function onUpload(e)
     {
         e.data = { uploadType: $("#UploadType").val() };
+    }
+    function exportContacts() {
+        $.post('@Url.Action("ExportContacts")', {},
+            function () {
+                toastr.success("Contacts Exported");
+
+            });
     }
 </script>

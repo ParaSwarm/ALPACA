@@ -185,7 +185,17 @@
         var emailPass = $('#userEmailPassword').val();
         var emailServer = $('#userSMTPServer').val();
         var emailPort = $('#userSMTPPort').val();
-        var adminFlag = $('#AdminDropdown').val();
+        var adminFlag = $('#AdminDropdown').val()
+        var validLength = /.{8}/.test(pass);
+        var hasCaps = /[A-Z]/.test(pass);
+        var hasNums = /\d/.test(pass);
+        var hasSpecials = /[~!,@@#%&_\$\^\*\?\-]/.test(pass);
+        var isValid = validLength && hasCaps && hasNums && hasSpecials;
+        if (!isValid)
+        {
+            toastr.error("password must have at least 8 characters, one upper-case, one lower-case, one number, and one symbol.");
+            return false;
+        };
         if (adminFlag == "1")
         {
             adminFlag = true;

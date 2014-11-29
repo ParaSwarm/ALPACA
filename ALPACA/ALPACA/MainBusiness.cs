@@ -84,15 +84,17 @@ namespace ALPACA
 
         public string AddToList(IList<string> listToAdd)
         {
-            CurrentUser.Value.Contacts = ListManager.MergeList((List<string>)listToAdd);
-            Session.SaveOrUpdate(CurrentUser);
+            CurrentUser.Value.Contacts = ListManager.MergeList((List<string>)CurrentUser.Value.Contacts,
+                                                                    (List<string>)listToAdd);
+            Session.SaveOrUpdate(CurrentUser.Value);
             return "";
         }
 
         public string RemoveFromList(IList<string> listToRemove)
         {
-            CurrentUser.Value.Contacts = ListManager.RemoveList((List<string>)listToRemove);
-            Session.SaveOrUpdate(CurrentUser);
+            CurrentUser.Value.Contacts = ListManager.RemoveList((List<string>)CurrentUser.Value.Contacts,
+                                                                    (List<string>)listToRemove);
+            Session.SaveOrUpdate(CurrentUser.Value);
             return "";
         }
         public string SaveUser(AlpacaUser user)

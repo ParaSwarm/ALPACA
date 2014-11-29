@@ -61,10 +61,13 @@ namespace ALPACA.Web.Controllers
             foreach (HttpPostedFileBase file in files)
             {
                 StreamReader reader = new StreamReader(file.InputStream);
-                string stringFromFile = reader.ReadToEnd();
-                IList<string> fileContents = stringFromFile.Split('\n').ToList();
+                IList<string> fileContents = new List<string>();
+                while (!reader.EndOfStream)
+                {
+                    fileContents.Add(reader.ReadLine());
+                }
                 //previous call always adds an empty string to the list, getting rid of it here
-                fileContents.RemoveAt(fileContents.Count - 1);
+                //fileContents.RemoveAt(fileContents.Count - 1);
 
                 switch (uploadType)
                 {

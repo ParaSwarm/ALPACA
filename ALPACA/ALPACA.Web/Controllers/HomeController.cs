@@ -146,6 +146,7 @@ namespace ALPACA.Web.Controllers
                 newUser.AdminFlag = model.adminFlag;
                 var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var result = manager.CreateAsync(newUser, model.pass);
+                while (!result.IsCompleted) { /*wait for task to complete to avoid DB session conflict*/}
                 MainBusiness.SaveUser(newUser);
 
             }

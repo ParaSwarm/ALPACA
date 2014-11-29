@@ -117,11 +117,12 @@ namespace ALPACA.Web.Controllers
                 CurrentUser.EmailPassword = model.emailPass;
                 CurrentUser.FirstName = model.fName;
                 CurrentUser.LastName = model.lName;
-                CurrentUser.PasswordHash = model.pass;
                 CurrentUser.EmailServer = model.emailServer;
                 CurrentUser.EmailPort = model.emailPort;
                 CurrentUser.AdminFlag = model.adminFlag;
                 MainBusiness.SaveUser(CurrentUser);
+                var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                CurrentUser.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
                 return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
             }
             else
@@ -152,10 +153,11 @@ namespace ALPACA.Web.Controllers
                 userBeingUpdated.EmailPassword = model.emailPass;
                 userBeingUpdated.FirstName = model.fName;
                 userBeingUpdated.LastName = model.lName;
-                userBeingUpdated.PasswordHash = model.pass;
                 userBeingUpdated.EmailServer = model.emailServer;
                 userBeingUpdated.EmailPort = model.emailPort;
                 userBeingUpdated.AdminFlag = model.adminFlag;
+                var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                userBeingUpdated.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
                 MainBusiness.SaveUser(userBeingUpdated);
             }
 

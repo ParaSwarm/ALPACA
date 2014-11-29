@@ -111,7 +111,7 @@ namespace ALPACA.Web.Controllers
             });
 
         }
-        public JsonResult SaveUserInfo(UserViewModel model)
+        public JsonResult SaveUserInfo(UserViewModel model, bool samePass)
         {
             AlpacaUser userBeingUpdated = null;
             if (model.username == CurrentUser.UserName)
@@ -125,16 +125,19 @@ namespace ALPACA.Web.Controllers
                 CurrentUser.AdminFlag = model.adminFlag;
                 MainBusiness.SaveUser(CurrentUser);
                 var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                CurrentUser.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
-                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
+                if(!samePass)
+                {
+                    CurrentUser.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
+                }
+                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName),passHash = CurrentUser.PasswordHash });
             }
             else
             {
             userBeingUpdated = MainBusiness.GetUser(model.username);
             }
+            AlpacaUser newUser = new AlpacaUser();
             if(userBeingUpdated == null)
             {
-                AlpacaUser newUser = new AlpacaUser();
                 newUser.UserName = model.username;
                 newUser.Email = model.email;
                 newUser.EmailPassword = model.emailPass;
@@ -161,11 +164,18 @@ namespace ALPACA.Web.Controllers
                 userBeingUpdated.EmailPort = model.emailPort;
                 userBeingUpdated.AdminFlag = model.adminFlag;
                 var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                userBeingUpdated.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
+                if(!samePass)
+                {
+                    userBeingUpdated.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
+                }
                 MainBusiness.SaveUser(userBeingUpdated);
             }
-
-            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
+            var moddedUser = userBeingUpdated;
+            if(userBeingUpdated == null)
+            {
+                moddedUser = newUser;
+            }
+            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName), passHash = moddedUser.PasswordHash  });
         }
 
         public JsonResult DeleteUser(string username)

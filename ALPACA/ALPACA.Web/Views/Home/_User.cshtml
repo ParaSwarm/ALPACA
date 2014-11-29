@@ -88,6 +88,7 @@
     </span>
 </div>
 </div>
+<input type="hidden" id="currPass" />
 <script>
     function OnChange()
     {
@@ -160,11 +161,46 @@
         var hasNums = /\d/.test(pass);
         var hasSpecials = /[~!,@@#%&_\$\^\*\?\-]/.test(pass);
         var isValid = validLength && hasCaps && hasNums && hasSpecials;
-        if (!isValid)
+        var samePass = true;
+        var needMore = false;
+        if (!email.length)
         {
-            toastr.error("password must have at least 8 characters, one upper-case, one lower-case, one number, and one symbol.");
+            toastr.error("You must enter an email for this user");
+            needMore= true;
+        }
+        if (!fName.length)
+        {
+            toastr.error("You must enter an First Name for this user");
+            needMore= true;
+        }
+        if (!lName.length)
+        {
+            toastr.error("You must enter an Last Name for this user");
+            needMore= true;
+        }
+        if (!pass.length)
+        {
+            toastr.error("You must enter an password for this user");
+            needMore= true;
+        }
+        if (!username.length)
+        {
+            toastr.error("You must enter an username for this user");
+            needMore= true;
+        }
+        if (needMore)
+        {
             return false;
-        };;
+        }
+        if ($('#currPass').val() != pass)
+        {
+            samePass = false;
+            if (!isValid)
+            {
+                toastr.error("password must have at least 8 characters, one upper-case, one lower-case, one number, and one symbol.");
+                return false;
+            }
+        }
         $.post('@Url.Action("SaveUserInfo")',
             {
                 username: username,
@@ -175,9 +211,12 @@
                 emailPass: emailPass,
                 emailServer: emailServer,
                 emailPort: emailPort,
-                adminFlag: false
-            }, function () {
-                toastr.success("User info saved"); 
+                adminFlag: false,
+                samePass: samePass
+            }, function (data) {
+                toastr.success("User info saved");
+                $('#currPass').val(data.passHash);
+                $('#userPassword').val(data.passHash);
             });
     }
     $(document).ready(function ()
@@ -193,6 +232,7 @@
                     $('#userPassword').val(data.pass);
                     $('#userSMTPServer').val(data.emailServer);
                     $('#userSMTPPort').val(data.emailPort);
+                    $('#currPass').val(data.pass);
                 })
 
     });

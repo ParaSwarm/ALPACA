@@ -162,36 +162,7 @@
         var hasSpecials = /[~!,@@#%&_\$\^\*\?\-]/.test(pass);
         var isValid = validLength && hasCaps && hasNums && hasSpecials;
         var samePass = true;
-        var needMore = false;
-        if (!email.length)
-        {
-            toastr.error("You must enter an email for this user");
-            needMore= true;
-        }
-        if (!fName.length)
-        {
-            toastr.error("You must enter an First Name for this user");
-            needMore= true;
-        }
-        if (!lName.length)
-        {
-            toastr.error("You must enter an Last Name for this user");
-            needMore= true;
-        }
-        if (!pass.length)
-        {
-            toastr.error("You must enter an password for this user");
-            needMore= true;
-        }
-        if (!username.length)
-        {
-            toastr.error("You must enter an username for this user");
-            needMore= true;
-        }
-        if (needMore)
-        {
-            return false;
-        }
+       
         if ($('#currPass').val() != pass)
         {
             samePass = false;

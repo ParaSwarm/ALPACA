@@ -119,6 +119,7 @@
 </div>
 </div>
 <input type="hidden" id="currPass" />
+<input type="hidden" id="currUsername" />
 <script>
     function OnChange()
     {
@@ -232,6 +233,10 @@
         {
             adminFlag = false;
         }
+        if (username != $('#currUsername').val() && $('#currUsername').val() != "")
+        {
+            $.post('@Url.Action("DeleteUser")', { username: $('#currUsername').val() });
+        }
         $.post('@Url.Action("SaveUserInfo")',
             {
                 username: username,
@@ -257,6 +262,7 @@
                     function (index, value) {
                         if (value == username) {
                             $('#usersListbox').val(value);
+                            $('#currUsername').val(value);
                         }
                     });
                 $('#userPassword').val(data.passHash);
@@ -287,6 +293,8 @@
                 $('#userPassword').val("");
                 $('#userSMTPServer').val("");
                 $('#userSMTPPort').val("");
+                $('#currPass').val("");
+                $('#currUsername').val("");
                 $('#AdminDropdown').data("kendoDropDownList").select(0);
             });
 
@@ -303,6 +311,8 @@
             $('#userPassword').val("");
             $('#userSMTPServer').val("");
             $('#userSMTPPort').val("");
+            $('#currUsername').val("");
+            $('#currPass').val("");
             $('#AdminDropdown').data("kendoDropDownList").select(0);
             return true;
         }
@@ -318,6 +328,7 @@
                     $('#userSMTPServer').val(data.emailServer);
                     $('#userSMTPPort').val(data.emailPort);
                     $('#currPass').val(data.pass);
+                    $('#currUsername').val(data.userName);
                     if (data.adminFlag)
                     {
                         $('#AdminDropdown').data("kendoDropDownList").select(1);

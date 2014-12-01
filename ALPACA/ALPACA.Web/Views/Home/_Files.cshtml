@@ -9,7 +9,7 @@
                     )
                     .Events(e => e
                         .Upload("onUpload")
-                        .Complete("onComplete")
+                        .Success("clearUploads")
                     )
             )
         </div>
@@ -45,8 +45,20 @@
     {
         e.data = { uploadType: $("#UploadType").val() };
     }
-    function onComplete(e)
-    {
+    function clearUploads(id) {
+        if (id) {
+            //reset uploads for only the selected Uploader control
+            $("#" + id + " .k-upload-files").remove();
+            $("#" + id + " .k-upload-status").remove();
+            $("#" + id + " .k-upload.k-header").addClass("k-upload-empty");
+            $("#" + id + " .k-upload-button").removeClass("k-state-focused");
+        } else {
+            //reset all the uploaders
+            $(".k-upload-files").remove();
+            $(".k-upload-status").remove();
+            $(".k-upload.k-header").addClass("k-upload-empty");
+            $(".k-upload-button").removeClass("k-state-focused");
+        }
         $('#files').find("ul").remove();
     }
 </script>

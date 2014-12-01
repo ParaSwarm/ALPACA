@@ -45,8 +45,8 @@
     {
         e.data = { uploadType: $("#UploadType").val() };
     }
-    function clearUploads(id) {
-        if (id) {
+    function clearUploads(e) {
+        if (e.id) {
             //reset uploads for only the selected Uploader control
             $("#" + id + " .k-upload-files").remove();
             $("#" + id + " .k-upload-status").remove();
@@ -60,5 +60,13 @@
             $(".k-upload-button").removeClass("k-state-focused");
         }
         $('#files').find("ul").remove();
+        if($('#UploadType').val() == "0")
+        {
+            toastr.success("Contacts added");
+        }
+        else
+        {
+            toastr.success("Contacts removed");
+        }
     }
 </script>

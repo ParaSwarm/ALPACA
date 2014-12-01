@@ -15,6 +15,7 @@ namespace ALPACA
         public List<string> MergeList(List<string> inputList1, List<string> inputList2)
         {
             inputList1.AddRange(inputList2);
+            inputList1 = inputList1.Distinct().ToList();
             inputList1.Sort();
             return inputList1;
         }

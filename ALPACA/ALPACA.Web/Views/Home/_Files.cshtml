@@ -9,6 +9,7 @@
                     )
                     .Events(e => e
                         .Upload("onUpload")
+                        .Complete("onComplete")
                     )
             )
         </div>
@@ -43,5 +44,9 @@
     function onUpload(e)
     {
         e.data = { uploadType: $("#UploadType").val() };
+    }
+    function onComplete(e)
+    {
+        $('#files').find("ul").remove();
     }
 </script>

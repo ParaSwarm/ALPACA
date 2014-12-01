@@ -38,6 +38,10 @@
                     $('#EmailBody').data('kendoEditor').value(result);
                 });
         }
+        else
+        {
+            $('#EmailBody').data('kendoEditor').value("");
+        }
     }
 
     function saveDraft(dName) {
@@ -58,7 +62,7 @@
                 toastr.success("Draft Saved");
                 $('#draftDropdown').empty();
                 var html = '';
-                $('#draftDropdown').append($('<option></option>').text("").val(""));
+                $('#draftDropdown').append($('<option></option>').text("New Draft").val(""));
                 $.each(data.draftNames, function (i, val) {
                     $('#draftDropdown').append($('<option></option>').text(val.Name).val(val.Name));/* added "val()" also*/
                 });
@@ -82,7 +86,7 @@
                 toastr.success("Draft Deleted");
                 $('#draftDropdown').empty();
                 var html = '';
-                $('#draftDropdown').append($('<option></option>').text("").val(""));
+                $('#draftDropdown').append($('<option></option>').text("New Draft").val(""));
                 $.each(data.draftNames, function (i, val) {
                     $('#draftDropdown').append($('<option></option>').text(val.Name).val(val.Name));/* added "val()" also*/
                 });

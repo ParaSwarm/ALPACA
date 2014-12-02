@@ -118,6 +118,8 @@
     </div>
 </div>
 </div>
+<input type="hidden" id="currPass" />
+<input type="hidden" id="currUsername" />
 <script>
     function OnChange()
     {
@@ -185,7 +187,44 @@
         var emailPass = $('#userEmailPassword').val();
         var emailServer = $('#userSMTPServer').val();
         var emailPort = $('#userSMTPPort').val();
-        var adminFlag = $('#AdminDropdown').val();
+        var adminFlag = $('#AdminDropdown').val()
+        var validLength = /.{8}/.test(pass);
+        var hasCaps = /[A-Z]/.test(pass);
+        var hasNums = /\d/.test(pass);
+        var hasSpecials = /[~!,@@#%&_\$\^\*\?\-]/.test(pass);
+        var isValid = validLength && hasCaps && hasNums && hasSpecials;
+        var samePass = true;
+        var needMore = false;
+        if (!email.length) {
+            toastr.error("You must enter an email for this user");
+            needMore = true;
+        }
+        if (!fName.length) {
+            toastr.error("You must enter an First Name for this user");
+            needMore = true;
+        }
+        if (!lName.length) {
+            toastr.error("You must enter an Last Name for this user");
+            needMore = true;
+        }
+        if (!pass.length) {
+            toastr.error("You must enter an password for this user");
+            needMore = true;
+        }
+        if (!username.length) {
+            toastr.error("You must enter an username for this user");
+            needMore = true;
+        }
+        if (needMore) {
+            return false;
+        }
+        if ($('#currPass').val() != pass) {
+            samePass = false;
+            if (!isValid) {
+                toastr.error("password must have at least 8 characters, one upper-case, one lower-case, one number, and one symbol.");
+                return false;
+            }
+        }
         if (adminFlag == "1")
         {
             adminFlag = true;
@@ -193,6 +232,10 @@
         else
         {
             adminFlag = false;
+        }
+        if (username != $('#currUsername').val() && $('#currUsername').val() != "")
+        {
+            $.post('@Url.Action("DeleteUser")', { username: $('#currUsername').val() });
         }
         $.post('@Url.Action("SaveUserInfo")',
             {
@@ -204,22 +247,26 @@
                 emailPass: emailPass,
                 emailServer: emailServer,
                 emailPort: emailPort,
-                adminFlag: adminFlag
+                adminFlag: adminFlag,
+                samePass: samePass
             }, function (data) {
                 toastr.success("User info saved")
+                $('#currPass').val(data.passHash);
                 $('#usersListbox').empty();
                 var html = '';
                 $('#usersListbox').append($('<option></option>').text("New User").val(""));
                 $.each(data.usernames, function (i, val) {
                     $('#usersListbox').append($('<option></option>').text(val).val(val));/* added "val()" also*/
                 });
-                $.each(data.draftNames,
+                $.each(data.usernames,
                     function (index, value) {
                         if (value == username) {
                             $('#usersListbox').val(value);
+                            $('#currUsername').val(value);
                         }
                     });
-            });
+                $('#userPassword').val(data.passHash);
+                });
     }
     function DeleteUser()
     {
@@ -230,6 +277,7 @@
             { username: username },
             function (data)
             {
+                toastr.success("User deleted");
                 $('#usersListbox').empty();
                 var html = '';
                 $('#usersListbox').append($('<option></option>').text("New User").val(""));
@@ -245,6 +293,8 @@
                 $('#userPassword').val("");
                 $('#userSMTPServer').val("");
                 $('#userSMTPPort').val("");
+                $('#currPass').val("");
+                $('#currUsername').val("");
                 $('#AdminDropdown').data("kendoDropDownList").select(0);
             });
 
@@ -261,6 +311,8 @@
             $('#userPassword').val("");
             $('#userSMTPServer').val("");
             $('#userSMTPPort').val("");
+            $('#currUsername').val("");
+            $('#currPass').val("");
             $('#AdminDropdown').data("kendoDropDownList").select(0);
             return true;
         }
@@ -275,6 +327,8 @@
                     $('#userPassword').val(data.pass);
                     $('#userSMTPServer').val(data.emailServer);
                     $('#userSMTPPort').val(data.emailPort);
+                    $('#currPass').val(data.pass);
+                    $('#currUsername').val(data.userName);
                     if (data.adminFlag)
                     {
                         $('#AdminDropdown').data("kendoDropDownList").select(1);

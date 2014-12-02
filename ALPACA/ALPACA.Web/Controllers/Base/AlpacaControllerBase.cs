@@ -1,6 +1,8 @@
 ﻿using ALPACA.Entities;
+using ALPACA.Web.Code;
 using Ninject;
 using System.Web.Mvc;
+
 
 namespace ALPACA.Web.Controllers.Base
 {
@@ -8,5 +10,7 @@ namespace ALPACA.Web.Controllers.Base
     {
         [Inject]
         public AlpacaUser CurrentUser { get; set; }
+        [Inject]
+        public UserManager AlpacaUserManager { get; set; } 
     }
 }

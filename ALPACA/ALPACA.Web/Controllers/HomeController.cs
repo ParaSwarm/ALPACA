@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace ALPACA.Web.Controllers
 {
@@ -62,10 +63,13 @@ namespace ALPACA.Web.Controllers
             foreach (HttpPostedFileBase file in files)
             {
                 StreamReader reader = new StreamReader(file.InputStream);
-                string stringFromFile = reader.ReadToEnd();
-                IList<string> fileContents = stringFromFile.Split('\n').ToList();
+                IList<string> fileContents = new List<string>();
+                while (!reader.EndOfStream)
+                {
+                    fileContents.Add(reader.ReadLine());
+                }
                 //previous call always adds an empty string to the list, getting rid of it here
-                fileContents.RemoveAt(fileContents.Count - 1);
+                //fileContents.RemoveAt(fileContents.Count - 1);
 
                 switch (uploadType)
                 {
@@ -109,57 +113,71 @@ namespace ALPACA.Web.Controllers
             });
 
         }
-        public JsonResult SaveUserInfo(string username, string email, string fName, string lName, string pass,
-                                        string emailPass, string emailServer, string emailPort, bool adminFlag)
+        public JsonResult SaveUserInfo(UserViewModel model, bool samePass)
         {
             AlpacaUser userBeingUpdated = null;
-            if (username == CurrentUser.UserName)
+            if (model.username == CurrentUser.UserName)
             {
-                CurrentUser.Email = email;
-                CurrentUser.EmailPassword = emailPass;
-                CurrentUser.FirstName = fName;
-                CurrentUser.LastName = lName;
-                CurrentUser.PasswordHash = pass;
-                CurrentUser.EmailServer = emailServer;
-                CurrentUser.EmailPort = emailPort;
-                CurrentUser.AdminFlag = adminFlag;
+                CurrentUser.Email = model.email;
+                CurrentUser.EmailPassword = model.emailPass;
+                CurrentUser.FirstName = model.fName;
+                CurrentUser.LastName = model.lName;
+                CurrentUser.EmailServer = model.emailServer;
+                CurrentUser.EmailPort = model.emailPort;
+                CurrentUser.AdminFlag = model.adminFlag;
                 MainBusiness.SaveUser(CurrentUser);
-                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
+                var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                if(!samePass)
+                {
+                    CurrentUser.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
+                }
+                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName),passHash = CurrentUser.PasswordHash });
             }
             else
             {
-            userBeingUpdated = MainBusiness.GetUser(username);
+            userBeingUpdated = MainBusiness.GetUser(model.username);
             }
+            AlpacaUser newUser = new AlpacaUser();
             if(userBeingUpdated == null)
             {
-                AlpacaUser newUser = new AlpacaUser();
-                newUser.UserName = username;
-                newUser.Email = email;
-                newUser.EmailPassword = emailPass;
-                newUser.FirstName = fName;
-                newUser.LastName = lName;
-                newUser.PasswordHash = pass;
-                newUser.EmailServer = emailServer;
-                newUser.EmailPort = emailPort;
-                newUser.AdminFlag = adminFlag;
+                newUser.UserName = model.username;
+                newUser.Email = model.email;
+                newUser.EmailPassword = model.emailPass;
+                newUser.FirstName = model.fName;
+                newUser.LastName = model.lName;
+                newUser.PasswordHash = model.pass;
+                newUser.EmailServer = model.emailServer;
+                newUser.EmailPort = model.emailPort;
+                newUser.AdminFlag = model.adminFlag;
+                var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var result = manager.CreateAsync(newUser, model.pass);
+                while (!result.IsCompleted) { /*wait for task to complete to avoid DB session conflict*/}
                 MainBusiness.SaveUser(newUser);
 
             }
             else
             {
-                userBeingUpdated.UserName = username;
-                userBeingUpdated.Email = email;
-                userBeingUpdated.EmailPassword = emailPass;
-                userBeingUpdated.FirstName = fName;
-                userBeingUpdated.LastName = lName;
-                userBeingUpdated.PasswordHash = pass;
-                userBeingUpdated.EmailServer = emailServer;
-                userBeingUpdated.EmailPort = emailPort;
-                userBeingUpdated.AdminFlag = adminFlag;
+                userBeingUpdated.UserName = model.username;
+                userBeingUpdated.Email = model.email;
+                userBeingUpdated.EmailPassword = model.emailPass;
+                userBeingUpdated.FirstName = model.fName;
+                userBeingUpdated.LastName = model.lName;
+                userBeingUpdated.EmailServer = model.emailServer;
+                userBeingUpdated.EmailPort = model.emailPort;
+                userBeingUpdated.AdminFlag = model.adminFlag;
+                var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                if(!samePass)
+                {
+                    userBeingUpdated.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
+                }
                 MainBusiness.SaveUser(userBeingUpdated);
             }
-
-            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
+            var moddedUser = userBeingUpdated;
+            if(userBeingUpdated == null)
+            {
+                moddedUser = newUser;
+            }
+            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName), passHash = moddedUser.PasswordHash  });
         }
 
         public JsonResult DeleteUser(string username)
@@ -169,14 +187,19 @@ namespace ALPACA.Web.Controllers
             return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName) });
         }
 
-        public JsonResult SendEmail(string emailBody)
+        public JsonResult SendEmail(string emailBody, string emailSubject)
         {
             if(string.IsNullOrWhiteSpace(emailBody))
                 return Json(new { success = false });
 
-            var emailSent = MainBusiness.SendEmail(emailBody);
+            var emailSent = MainBusiness.SendEmail(emailBody, emailSubject);
 
             return Json(new { success = true });
+        }
+        public FileResult ExportContacts()
+        {
+            string toExport = MainBusiness.ExportContacts();
+            return File(new System.Text.UTF8Encoding().GetBytes(toExport), "text/csv", "contacts.csv");
         }
     }
 

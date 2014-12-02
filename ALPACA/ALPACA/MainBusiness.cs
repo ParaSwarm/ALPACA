@@ -3,6 +3,7 @@ using NHibernate;
 using Ninject;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ALPACA
 {
@@ -85,15 +86,17 @@ namespace ALPACA
 
         public string AddToList(IList<string> listToAdd)
         {
-            //ListManager.MergeList(listToAdd);
-
+            CurrentUser.Value.Contacts = ListManager.MergeList((List<string>)CurrentUser.Value.Contacts,
+                                                                    (List<string>)listToAdd);
+            Session.SaveOrUpdate(CurrentUser.Value);
             return "";
         }
 
         public string RemoveFromList(IList<string> listToRemove)
         {
-            //ListManageer.RemoveList(listToAdd);
-
+            CurrentUser.Value.Contacts = ListManager.RemoveList((List<string>)CurrentUser.Value.Contacts,
+                                                                    (List<string>)listToRemove);
+            Session.SaveOrUpdate(CurrentUser.Value);
             return "";
         }
         public string SaveUser(AlpacaUser user)
@@ -108,11 +111,23 @@ namespace ALPACA
 
             return "deleted";
         }
-        public string SendEmail(string emailBody)
+        public string SendEmail(string emailBody, string emailSubject)
         {
-            EmailComposer.SendEmail(CurrentUser.Value, "subject", emailBody);
+            EmailComposer.SendEmail(CurrentUser.Value, emailSubject, emailBody);
 
-            return "deleted";
+            return "sent";
+        }
+        public string ExportContacts()
+        {
+            StringWriter output = new StringWriter();
+            List<string> currContacts =(List<string>)CurrentUser.Value.Contacts;
+            currContacts.Sort();
+            foreach(var contact in currContacts)
+            {
+                output.WriteLine(contact);
+            }
+
+            return output.ToString(); 
         }
     }
 
@@ -128,6 +143,7 @@ namespace ALPACA
         string SaveUser(AlpacaUser user);
         string DeleteUser(AlpacaUser user);
         IEnumerable<AlpacaUser> GetUsers();
-        string SendEmail(string emailBody);
+        string SendEmail(string emailBody, string emailSubject);
+        string ExportContacts();
     }
 }

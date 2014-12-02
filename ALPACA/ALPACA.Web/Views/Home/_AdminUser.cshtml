@@ -250,23 +250,30 @@
                 adminFlag: adminFlag,
                 samePass: samePass
             }, function (data) {
-                toastr.success("User info saved")
-                $('#currPass').val(data.passHash);
-                $('#usersListbox').empty();
-                var html = '';
-                $('#usersListbox').append($('<option></option>').text("New User").val(""));
-                $.each(data.usernames, function (i, val) {
-                    $('#usersListbox').append($('<option></option>').text(val).val(val));/* added "val()" also*/
-                });
-                $.each(data.usernames,
-                    function (index, value) {
-                        if (value == username) {
-                            $('#usersListbox').val(value);
-                            $('#currUsername').val(value);
-                        }
+                if (data.success)
+                {
+                    toastr.success("User info saved")
+                    $('#currPass').val(data.passHash);
+                    $('#usersListbox').empty();
+                    var html = '';
+                    $('#usersListbox').append($('<option></option>').text("New User").val(""));
+                    $.each(data.usernames, function (i, val) {
+                        $('#usersListbox').append($('<option></option>').text(val).val(val));/* added "val()" also*/
                     });
-                $('#userPassword').val(data.passHash);
-                });
+                    $.each(data.usernames,
+                        function (index, value) {
+                            if (value == username) {
+                                $('#usersListbox').val(value);
+                                $('#currUsername').val(value);
+                            }
+                        });
+                    $('#userPassword').val(data.passHash);
+                }
+                else
+                {
+                    toastr.error("Something went wrong. User info not saved. Please try again later")
+                }
+            });
     }
     function DeleteUser()
     {

@@ -116,6 +116,7 @@ namespace ALPACA.Web.Controllers
         public JsonResult SaveUserInfo(UserViewModel model, bool samePass)
         {
             AlpacaUser userBeingUpdated = null;
+            bool success;
             if (model.username == CurrentUser.UserName)
             {
                 CurrentUser.Email = model.email;
@@ -125,13 +126,14 @@ namespace ALPACA.Web.Controllers
                 CurrentUser.EmailServer = model.emailServer;
                 CurrentUser.EmailPort = model.emailPort;
                 CurrentUser.AdminFlag = model.adminFlag;
-                MainBusiness.SaveUser(CurrentUser);
                 var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 if(!samePass)
                 {
                     CurrentUser.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
                 }
-                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName),passHash = CurrentUser.PasswordHash });
+                success = MainBusiness.SaveUser(CurrentUser);
+                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName),passHash = CurrentUser.PasswordHash,
+                    success = success});
             }
             else
             {
@@ -152,7 +154,7 @@ namespace ALPACA.Web.Controllers
                 var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var result = manager.CreateAsync(newUser, model.pass);
                 while (!result.IsCompleted) { /*wait for task to complete to avoid DB session conflict*/}
-                MainBusiness.SaveUser(newUser);
+                success = MainBusiness.SaveUser(newUser);
 
             }
             else
@@ -170,14 +172,14 @@ namespace ALPACA.Web.Controllers
                 {
                     userBeingUpdated.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
                 }
-                MainBusiness.SaveUser(userBeingUpdated);
+                success = MainBusiness.SaveUser(userBeingUpdated);
             }
             var moddedUser = userBeingUpdated;
             if(userBeingUpdated == null)
             {
                 moddedUser = newUser;
             }
-            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName), passHash = moddedUser.PasswordHash  });
+            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName), passHash = moddedUser.PasswordHash, success = success  });
         }
 
         public JsonResult DeleteUser(string username)

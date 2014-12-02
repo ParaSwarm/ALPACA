@@ -99,11 +99,18 @@ namespace ALPACA
             Session.SaveOrUpdate(CurrentUser.Value);
             return "";
         }
-        public string SaveUser(AlpacaUser user)
+        public bool SaveUser(AlpacaUser user)
         {
-            Session.SaveOrUpdate(user);
+            try
+            {
+                Session.SaveOrUpdate(user);
+            }catch(HibernateException e)
+            {
+                Session.Close();
+                return false;
+            }
 
-            return "yaaaay";
+            return true;
         }
         public string DeleteUser(AlpacaUser user)
         {
@@ -138,7 +145,7 @@ namespace ALPACA
         string DeleteDraft(string draftName);
         string AddToList(IList<string> listToAdd);
         string RemoveFromList(IList<string> listToRemove);
-        string SaveUser(AlpacaUser user);
+        bool SaveUser(AlpacaUser user);
         string DeleteUser(AlpacaUser user);
         IEnumerable<AlpacaUser> GetUsers();
         bool SendEmail(string emailBody, string emailSubject);

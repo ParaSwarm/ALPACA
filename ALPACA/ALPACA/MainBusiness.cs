@@ -15,6 +15,7 @@ namespace ALPACA
         [Inject]
         public ISession Session { get; set; }
 
+
         public AlpacaUser GetUser(string userName)
         {
             return Session.QueryOver<AlpacaUser>().Where(x => x.UserName == userName).SingleOrDefault();
@@ -24,6 +25,7 @@ namespace ALPACA
         {
             return Session.QueryOver<EmailDraft>().Where(x => x.UserId == CurrentUser.Value.Id).List();
         }
+
         public IEnumerable<AlpacaUser> GetUsers()
         {
             return Session.QueryOver<AlpacaUser>().List();

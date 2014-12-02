@@ -38,6 +38,7 @@ namespace ALPACA.Web.Controllers
         {
             return MainBusiness.GetDraftBody(draftName);
         }
+
         [HttpPost]
         public JsonResult SaveDraft(string draftName, string draftBody)
         {
@@ -45,6 +46,7 @@ namespace ALPACA.Web.Controllers
 
             return Json(new { draftNames = MainBusiness.GetDrafts() });
         }
+
         [HttpPost]
         public JsonResult DeleteDraft(string draftName)
         {

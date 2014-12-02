@@ -194,7 +194,7 @@ namespace ALPACA.Web.Controllers
 
             var emailSent = MainBusiness.SendEmail(emailBody, emailSubject);
 
-            return Json(new { success = true });
+            return Json(new { success = emailSent});
         }
         public FileResult ExportContacts()
         {

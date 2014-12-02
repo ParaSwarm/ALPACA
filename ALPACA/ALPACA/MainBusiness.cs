@@ -111,11 +111,9 @@ namespace ALPACA
 
             return "deleted";
         }
-        public string SendEmail(string emailBody, string emailSubject)
+        public bool SendEmail(string emailBody, string emailSubject)
         {
-            EmailComposer.SendEmail(CurrentUser.Value, emailSubject, emailBody);
-
-            return "sent";
+            return EmailComposer.SendEmail(CurrentUser.Value, emailSubject, emailBody);
         }
         public string ExportContacts()
         {
@@ -143,7 +141,7 @@ namespace ALPACA
         string SaveUser(AlpacaUser user);
         string DeleteUser(AlpacaUser user);
         IEnumerable<AlpacaUser> GetUsers();
-        string SendEmail(string emailBody, string emailSubject);
+        bool SendEmail(string emailBody, string emailSubject);
         string ExportContacts();
     }
 }

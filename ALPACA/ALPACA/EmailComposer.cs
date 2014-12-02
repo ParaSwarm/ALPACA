@@ -6,30 +6,44 @@ namespace ALPACA
 {
     public static class EmailComposer
     {
-        public static void SendEmail(AlpacaUser currentUser, string subject, string emailBody)
+        public static bool SendEmail(AlpacaUser currentUser, string subject, string emailBody)
         {
             var fromAddress = new MailAddress(currentUser.Email);
             string fromPassword = currentUser.EmailPassword;
-            
-
-            var smtp = new SmtpClient
+            SmtpClient smtp;
+            try
             {
-                Host = currentUser.EmailServer,
-                Port = Convert.ToInt32(currentUser.EmailPort),
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
+                smtp = new SmtpClient
+                {
+                    Host = currentUser.EmailServer,
+                    Port = Convert.ToInt32(currentUser.EmailPort),
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+
+            }catch(Exception e)
+            {
+                return false;
+            }
+
             foreach (var contact in currentUser.Contacts)
             {
 
                 using (var message = new MailMessage { From = fromAddress, Subject = subject, Body = emailBody, IsBodyHtml = true })
-                { 
-                    message.To.Add(contact);
-                    smtp.Send(message);
+                {
+                    try
+                    {
+                        message.To.Add(contact);
+                        smtp.Send(message);
+                    }catch(SmtpException e)
+                    {
+                        return false;
+                    }
                 }
             }
+            return true;
         }
     }
 }

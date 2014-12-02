@@ -132,7 +132,14 @@
            '@Url.Action("SendEmail")',
            { emailBody: emailBody , emailSubject:emailSubject },
            function (data) {
-               toastr.success("Email successfully sent!");
+               if (data.success)
+               {
+                   toastr.success("Email successfully sent!");
+               }
+               else
+               {
+                   toastr.error("Email not sent. Please check your email settings and try again");
+               }
            });
     }
     

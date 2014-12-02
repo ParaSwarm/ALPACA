@@ -29,6 +29,10 @@ namespace ALPACA.Web.Controllers
                 Users = new UserViewModel
                 {
                     Users = MainBusiness.GetUsers().Select(x  => x.UserName)
+                },
+                Contacts = new ContactsViewModel
+                {
+                    Contacts = CurrentUser.Contacts
                 }
             };
             ViewBag.IsAdmin = CurrentUser.AdminFlag;
@@ -202,6 +206,13 @@ namespace ALPACA.Web.Controllers
         {
             string toExport = MainBusiness.ExportContacts();
             return File(new System.Text.UTF8Encoding().GetBytes(toExport), "text/csv", "contacts.csv");
+        }
+        public JsonResult GetContacts()
+        {
+            JsonResult result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            result.Data = CurrentUser.Contacts;
+            return result;
         }
     }
 

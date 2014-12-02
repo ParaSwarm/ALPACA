@@ -13,7 +13,7 @@
                 <li role="presentation"><a href="#userManagement" aria-controls="userManagement" role="tab" data-toggle="tab">User Management</a></li>
             </ul>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="listManagement"><br />@{ Html.RenderPartial("_Files"); }</div>
+                <div role="tabpanel" class="tab-pane active" id="listManagement"><br />@{ Html.RenderPartial("_Files", Model.Contacts); }</div>
                 <div role="tabpanel" class="tab-pane" id="userManagement">
                     <br />@{if (ViewBag.IsAdmin)
                     {

@@ -19,20 +19,14 @@
         <span class=" col-sm-2 col-lg-1 col-sm-pull-2">
             <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-danger btn-block">Delete</button>
         </span>
-        <span class="col-sm-2 col-sm-offset-0 col-lg-offset-6">
+        <span class="col-sm-2 col-sm-offset-2 col-lg-offset-4 col-xs-offset-0">
+            <button id="attachFile" class="btn btn-default btn-block" onclick="showAttachmentsModal();">Attach File</button>
+        </span>
+        <span class="col-sm-2 col-sm-offset-0">
             <button id="sendEmail" onclick="sendEmail();" class="btn btn-success btn-block">Send Email</button>
         </span>
-    </div>
-    <div class="row">
-        <span class="col-sm-2 col-sm col-lg-12 col-xs">
-            @(Html.Kendo().Upload().Name("attachments")
-                .Messages(m => m.Select("Attach File"))
-                .Async(async => async
-                    .Save("UploadAttachment", "Home")
-                    .Remove("RemoveAttachment", "Home")))
-        </span>
-    </div>
 </div>
+    </div>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();
@@ -146,6 +140,14 @@
                }
            });
     }
+    function showAttachmentsModal()
+    {
+        $('#attachmentsModal').modal('show');
+    }
+    function hideAttachmentsModal()
+    {
+        $('#attachmentsModal').modal('hide');
+    }
 
 
 </script>
@@ -161,6 +163,29 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="modalButton" class="btn btn-success" onclick="getModalName();">Save draft</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="attachmentsModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Attachments:</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <span class="col-sm-2 col-sm col-lg-12 col-xs">
+                        @(Html.Kendo().Upload().Name("attachments")
+                        .Messages(m => m.Select("Attach File"))
+                        .Async(async => async
+                            .Save("UploadAttachment", "Home")
+                            .Remove("RemoveAttachment", "Home")))
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="modalAttachmentsButton" class="btn btn-danger" onclick="hideAttachmentsModal();">Close</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

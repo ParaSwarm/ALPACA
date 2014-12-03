@@ -4,6 +4,7 @@ using Ninject;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mail;
 
 namespace ALPACA
 {
@@ -99,6 +100,7 @@ namespace ALPACA
             Session.SaveOrUpdate(CurrentUser.Value);
             return "";
         }
+
         public bool SaveUser(AlpacaUser user)
         {
             try
@@ -112,16 +114,19 @@ namespace ALPACA
 
             return true;
         }
+
         public string DeleteUser(AlpacaUser user)
         {
             Session.Delete(user);
 
             return "deleted";
         }
-        public bool SendEmail(string emailBody, string emailSubject)
+
+        public bool SendEmail(string emailBody, string emailSubject, IList<Attachment> attachments)
         {
-            return EmailComposer.SendEmail(CurrentUser.Value, emailSubject, emailBody);
+            return EmailComposer.SendEmail(CurrentUser.Value, emailSubject, emailBody, attachments);
         }
+
         public string ExportContacts()
         {
             StringWriter output = new StringWriter();
@@ -148,7 +153,7 @@ namespace ALPACA
         bool SaveUser(AlpacaUser user);
         string DeleteUser(AlpacaUser user);
         IEnumerable<AlpacaUser> GetUsers();
-        bool SendEmail(string emailBody, string emailSubject);
+        bool SendEmail(string emailBody, string emailSubject, IList<Attachment> attachments);
         string ExportContacts();
     }
 }

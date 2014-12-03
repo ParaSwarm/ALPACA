@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <span class="label label-primary">Subject:</span>
-            <input id="emailSubject" class="form-control" /> 
+            <input id="emailSubject" class="form-control" />
         </div>
         <div class="col-md-12">
             @Html.Kendo().EditorFor(m => m.EmailBody)
@@ -19,11 +19,17 @@
         <span class=" col-sm-2 col-lg-1 col-sm-pull-2">
             <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-danger btn-block">Delete</button>
         </span>
-        <span class="col-sm-2 col-sm-offset-2 col-lg-offset-4 col-xs-offset-0">
-            <button id="attachFile" class="btn btn-default btn-block">Attach File</button>
+        <span class="col-sm-2 col-sm-offset-0 col-lg-offset-6">
+            <button id="sendEmail" onclick="sendEmail();" class="btn btn-success btn-block">Send Email</button>
         </span>
-        <span class="col-sm-2 col-sm-offset-0">
-            <button id="sendEmail" onclick="sendEmail();" class=" btn btn-success btn-block">Send Email</button>
+    </div>
+    <div class="row">
+        <span class="col-sm-2 col-sm col-lg-12 col-xs">
+            @(Html.Kendo().Upload().Name("attachments")
+                .Messages(m => m.Select("Attach File"))
+                .Async(async => async
+                    .Save("UploadAttachment", "Home")
+                    .Remove("RemoveAttachment", "Home")))
         </span>
     </div>
 </div>
@@ -38,8 +44,7 @@
                     $('#EmailBody').data('kendoEditor').value(result);
                 });
         }
-        else
-        {
+        else {
             $('#EmailBody').data('kendoEditor').value("");
         }
     }
@@ -114,6 +119,8 @@
         $('#modal-dialog').on('shown.bs.modal.', function () {
             $('#modalName').focus();
         });
+
+        //$('#sendEmail').raptorize();
     });
 
     function sendEmail() {
@@ -123,26 +130,23 @@
             toastr.warning('Please enter a body for your email.');
             return;
         }
-        if (!emailSubject.length)
-        {
+        if (!emailSubject.length) {
             emailSubject = "(no subject)";
         }
 
         $.post(
            '@Url.Action("SendEmail")',
-           { emailBody: emailBody , emailSubject:emailSubject },
+           { emailBody: emailBody, emailSubject: emailSubject },
            function (data) {
-               if (data.success)
-               {
+               if (data.success) {
                    toastr.success("Email successfully sent!");
                }
-               else
-               {
+               else {
                    toastr.error("Email not sent. Please check your email settings and try again");
                }
            });
     }
-    
+
 
 </script>
 <div class="modal fade" id="modal-dialog">

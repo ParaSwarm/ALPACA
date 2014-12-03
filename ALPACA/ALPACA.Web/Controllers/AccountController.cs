@@ -413,7 +413,7 @@ namespace ALPACA.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            AlpacaUserManager.NullifySession();
+            CacheManager.NullifySession();
             CurrentUser = null;
             return RedirectToAction("Index", "Home");
         }

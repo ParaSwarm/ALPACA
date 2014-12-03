@@ -11,7 +11,8 @@ namespace ALPACA.Web
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/alpaca.js",
-                        "~/Scripts/toastr.js"));
+                        "~/Scripts/toastr.js",
+                        "~/Scripts/jquery.raptorize.1.0.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

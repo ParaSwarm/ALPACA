@@ -11,6 +11,6 @@ namespace ALPACA.Web.Controllers.Base
         [Inject]
         public AlpacaUser CurrentUser { get; set; }
         [Inject]
-        public UserManager AlpacaUserManager { get; set; } 
+        public CacheManager CacheManager { get; set; } 
     }
 }

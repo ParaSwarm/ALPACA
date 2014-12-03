@@ -8,6 +8,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
+using System.Net.Mail;
+using System.Net.Mime;
 
 namespace ALPACA.Web.Controllers
 {
@@ -28,7 +30,7 @@ namespace ALPACA.Web.Controllers
                 },
                 Users = new UserViewModel
                 {
-                    Users = MainBusiness.GetUsers().Select(x  => x.UserName)
+                    Users = MainBusiness.GetUsers().Select(x => x.UserName)
                 },
                 Contacts = new ContactsViewModel
                 {
@@ -92,28 +94,31 @@ namespace ALPACA.Web.Controllers
         {
             return Json(new
             {
-                userName = CurrentUser.UserName, 
-                                fName = CurrentUser.FirstName, 
-                                lName = CurrentUser.LastName, 
-                                email = CurrentUser.Email,
-                                emailPassword = CurrentUser.EmailPassword,
-                                emailServer = CurrentUser.EmailServer,
-                                emailPort = CurrentUser.EmailPort,
-                             pass = CurrentUser.PasswordHash,
-                                adminFlag = CurrentUser.AdminFlag});
+                userName = CurrentUser.UserName,
+                fName = CurrentUser.FirstName,
+                lName = CurrentUser.LastName,
+                email = CurrentUser.Email,
+                emailPassword = CurrentUser.EmailPassword,
+                emailServer = CurrentUser.EmailServer,
+                emailPort = CurrentUser.EmailPort,
+                pass = CurrentUser.PasswordHash,
+                adminFlag = CurrentUser.AdminFlag
+            });
         }
         public JsonResult GetUserByName(string username)
         {
             var user = MainBusiness.GetUser(username);
-            return Json(new {userName = user.UserName,
-                             fName = user.FirstName,
-                             lName = user.LastName,
-                             email = user.Email,
-                             emailPassword = user.EmailPassword,
-                             emailServer = user.EmailServer,
-                             emailPort = user.EmailPort,
-                             pass = user.PasswordHash,
-                             adminFlag = user.AdminFlag
+            return Json(new
+            {
+                userName = user.UserName,
+                fName = user.FirstName,
+                lName = user.LastName,
+                email = user.Email,
+                emailPassword = user.EmailPassword,
+                emailServer = user.EmailServer,
+                emailPort = user.EmailPort,
+                pass = user.PasswordHash,
+                adminFlag = user.AdminFlag
             });
 
         }
@@ -131,20 +136,24 @@ namespace ALPACA.Web.Controllers
                 CurrentUser.EmailPort = model.emailPort;
                 CurrentUser.AdminFlag = model.adminFlag;
                 var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                if(!samePass)
+                if (!samePass)
                 {
                     CurrentUser.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
                 }
                 success = MainBusiness.SaveUser(CurrentUser);
-                return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName),passHash = CurrentUser.PasswordHash,
-                    success = success});
+                return Json(new
+                {
+                    usernames = MainBusiness.GetUsers().Select(x => x.UserName),
+                    passHash = CurrentUser.PasswordHash,
+                    success = success
+                });
             }
             else
             {
-            userBeingUpdated = MainBusiness.GetUser(model.username);
+                userBeingUpdated = MainBusiness.GetUser(model.username);
             }
             AlpacaUser newUser = new AlpacaUser();
-            if(userBeingUpdated == null)
+            if (userBeingUpdated == null)
             {
                 newUser.UserName = model.username;
                 newUser.Email = model.email;
@@ -172,18 +181,18 @@ namespace ALPACA.Web.Controllers
                 userBeingUpdated.EmailPort = model.emailPort;
                 userBeingUpdated.AdminFlag = model.adminFlag;
                 var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                if(!samePass)
+                if (!samePass)
                 {
                     userBeingUpdated.PasswordHash = manager.PasswordHasher.HashPassword(model.pass);
                 }
                 success = MainBusiness.SaveUser(userBeingUpdated);
             }
             var moddedUser = userBeingUpdated;
-            if(userBeingUpdated == null)
+            if (userBeingUpdated == null)
             {
                 moddedUser = newUser;
             }
-            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName), passHash = moddedUser.PasswordHash, success = success  });
+            return Json(new { usernames = MainBusiness.GetUsers().Select(x => x.UserName), passHash = moddedUser.PasswordHash, success = success });
         }
 
         public JsonResult DeleteUser(string username)
@@ -195,24 +204,47 @@ namespace ALPACA.Web.Controllers
 
         public JsonResult SendEmail(string emailBody, string emailSubject)
         {
-            if(string.IsNullOrWhiteSpace(emailBody))
+            if (string.IsNullOrWhiteSpace(emailBody))
                 return Json(new { success = false });
 
-            var emailSent = MainBusiness.SendEmail(emailBody, emailSubject);
+            var emailSent = MainBusiness.SendEmail(emailBody, emailSubject, CacheManager.GetAttachments());
+            if (emailSent)
+                CacheManager.RemoveAllAttachments();
 
-            return Json(new { success = emailSent});
+            return Json(new { success = emailSent });
         }
+
         public FileResult ExportContacts()
         {
             string toExport = MainBusiness.ExportContacts();
             return File(new System.Text.UTF8Encoding().GetBytes(toExport), "text/csv", "contacts.csv");
         }
+
         public JsonResult GetContacts()
         {
             JsonResult result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             result.Data = CurrentUser.Contacts;
             return result;
+        }
+
+        public ContentResult UploadAttachment(IEnumerable<HttpPostedFileBase> attachments)
+        {
+            foreach (var file in attachments)
+            {
+                var attachment = new Attachment(file.InputStream, file.FileName);
+                CacheManager.AddAttachment(attachment);
+            }
+
+            return Content(string.Empty);
+        }
+
+        public ContentResult RemoveAttachment(string[] fileNames)
+        {
+            foreach (var fileName in fileNames)
+                CacheManager.RemoveAttachment(fileName);
+
+            return Content(string.Empty);
         }
     }
 

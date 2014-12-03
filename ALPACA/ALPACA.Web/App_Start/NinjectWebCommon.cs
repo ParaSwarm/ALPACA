@@ -69,8 +69,8 @@ namespace ALPACA.Web.App_Start
             //kernel.Bind<ISessionFactory>().ToMethod(c => AlpacaDatabaseFactory.CreateSessionFactory()).InSingletonScope();
             kernel.Bind<ISession>().ToMethod(c => AlpacaDatabaseFactory.SessionFactory.OpenSession()).InRequestScope();
             kernel.Bind<IMainBusiness>().To<MainBusiness>().InRequestScope();
-            kernel.Bind<UserManager>().ToSelf().InRequestScope();
-            kernel.Bind<AlpacaUser>().ToMethod(c => kernel.Get<UserManager>().CurrentUser).InRequestScope();
+            kernel.Bind<CacheManager>().ToSelf().InRequestScope();
+            kernel.Bind<AlpacaUser>().ToMethod(c => kernel.Get<CacheManager>().CurrentUser).InRequestScope();
             kernel.Bind<IAlpacaPrincipal>().ToMethod(c => kernel.Get<HttpContextBase>().User as AlpacaPrincipal).InRequestScope();
             kernel.Bind<HttpContextBase>().ToMethod(c => new HttpContextWrapper(HttpContext.Current)).InRequestScope();
 

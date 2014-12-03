@@ -24,5 +24,19 @@ namespace ALPACA.Utility
             }
             return query.ToList();
         }
+
+        public static void RemoveAll<T>(this IList<T> source, Predicate<T> predicate)
+        {
+            var list = source as List<T>;
+            if (list != null)
+            {
+                list.RemoveAll(predicate);
+                return;
+            }
+
+            for (int i = source.Count - 1; i >= 0; i--)
+                if (predicate(source[i]))
+                    source.RemoveAt(i);
+        }
     }
 }

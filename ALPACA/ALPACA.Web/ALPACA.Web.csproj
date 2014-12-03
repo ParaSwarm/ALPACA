@@ -198,7 +198,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Code\UserManager.cs" />
+    <Compile Include="Code\CacheManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Base\AlpacaControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -251,6 +251,9 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Scripts\alpaca.js" />
+    <Content Include="Scripts\jquery.raptorize.1.0.js" />
+    <Content Include="Scripts\raptor-sound.mp3" />
+    <Content Include="Scripts\raptor.png" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Views\Home\_Files.cshtml" />
@@ -258,6 +261,7 @@
     <Content Include="Views\Home\_AdminUser.cshtml" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="Scripts\raptor-sound.ogg" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

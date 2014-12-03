@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 
@@ -6,7 +7,7 @@ namespace ALPACA
 {
     public static class EmailComposer
     {
-        public static bool SendEmail(AlpacaUser currentUser, string subject, string emailBody)
+        public static bool SendEmail(AlpacaUser currentUser, string subject, string emailBody, IList<Attachment> attachments)
         {
             var fromAddress = new MailAddress(currentUser.Email);
             string fromPassword = currentUser.EmailPassword;
@@ -23,21 +24,25 @@ namespace ALPACA
                     Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
                 };
 
-            }catch(Exception e)
+            }
+            catch(Exception e)
             {
                 return false;
             }
 
             foreach (var contact in currentUser.Contacts)
             {
-
                 using (var message = new MailMessage { From = fromAddress, Subject = subject, Body = emailBody, IsBodyHtml = true })
                 {
                     try
                     {
+                        foreach (var attachment in attachments)
+                            message.Attachments.Add(attachment);
+
                         message.To.Add(contact);
                         smtp.Send(message);
-                    }catch(SmtpException e)
+                    }
+                    catch(SmtpException e)
                     {
                         return false;
                     }

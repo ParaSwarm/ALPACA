@@ -134,6 +134,10 @@
            function (data) {
                if (data.success) {
                    toastr.success("Email successfully sent!");
+                   clearAttachments("attachments");
+                   indicateAttachment();
+                   $('#EmailBody').data('kendoEditor').value("");
+                   $('#draftDropdown').val("");
                }
                else {
                    toastr.error("Email not sent. Please check your email settings and try again");
@@ -142,11 +146,39 @@
     }
     function showAttachmentsModal()
     {
+        $('#attachmentsModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
         $('#attachmentsModal').modal('show');
+        indicateAttachment();
     }
     function hideAttachmentsModal()
     {
         $('#attachmentsModal').modal('hide');
+        indicateAttachment();
+    }
+    function clearAttachments(id) {
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $(".k-upload.k-header").addClass("k-upload-empty");
+        $(".k-upload-button").removeClass("k-state-focused");
+    }
+    function indicateAttachment()
+    {
+        $.get('@Url.Action("CheckForAttachments")', {},
+            function (numAttachments) {
+                if(numAttachments > 0)
+                {
+                    $("#attachFile").addClass("btn-success");
+                    $("#attachFile").removeClass("btn-default");
+                }
+                else
+                {
+                    $("#attachFile").addClass("btn-default");
+                    $("#attachFile").removeClass("btn-success");
+                }
+            });
     }
 
 
@@ -180,7 +212,8 @@
                         .Messages(m => m.Select("Attach File"))
                         .Async(async => async
                             .Save("UploadAttachment", "Home")
-                            .Remove("RemoveAttachment", "Home")))
+                            .Remove("RemoveAttachment", "Home"))
+                            )
                     </span>
                 </div>
             </div>

@@ -246,6 +246,10 @@ namespace ALPACA.Web.Controllers
 
             return Content(string.Empty);
         }
+        public int CheckForAttachments()
+        {
+            return CacheManager.GetAttachments().Count;
+        }
     }
 
     public enum UploadType

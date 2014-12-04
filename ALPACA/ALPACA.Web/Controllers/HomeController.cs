@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using System.Net.Mail;
 using System.Net.Mime;
+using System;
 
 namespace ALPACA.Web.Controllers
 {
@@ -230,10 +231,14 @@ namespace ALPACA.Web.Controllers
 
         public ContentResult UploadAttachment(IEnumerable<HttpPostedFileBase> attachments)
         {
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            
             foreach (var file in attachments)
             {
-                var attachment = new Attachment(file.InputStream, file.FileName);
-                CacheManager.AddAttachment(attachment);
+                var path = Path.Combine(appDataPath, file.FileName);
+                file.SaveAs(path);
+
+                CacheManager.AddAttachment(file.FileName);
             }
 
             return Content(string.Empty);

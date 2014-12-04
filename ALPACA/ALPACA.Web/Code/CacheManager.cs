@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using ALPACA.Utility;
+using System.IO;
 
 namespace ALPACA.Web.Code
 {
@@ -46,17 +47,23 @@ namespace ALPACA.Web.Code
             HttpContext.Session.Abandon();
         }
 
-        public void AddAttachment(Attachment attachment)
+        public void AddAttachment(string attachment)
         {
             var attachments = GetAttachments();
-            attachments.Add(attachment);
+                        attachments.Add(attachment);
             CacheSession("Attachments", attachments);
         }
 
         public void RemoveAttachment(string attachmentName)
         {
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var attachments = GetAttachments();
-            attachments.RemoveAll(x => x.Name.Contains(attachmentName));
+            foreach(var fileName in attachments)
+            {
+                var fileToDelete = Path.Combine(appDataPath, fileName);
+                File.Delete(fileToDelete);
+            }
+            attachments.RemoveAll(x => x.Contains(attachmentName));
             if (!attachments.Any())
                 attachments = null;
 
@@ -65,12 +72,21 @@ namespace ALPACA.Web.Code
 
         public void RemoveAllAttachments()
         {
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var attachments = GetAttachments();
+            foreach(var fileName in attachments)
+            {
+                var fileToDelete = Path.Combine(appDataPath, fileName);
+                File.Delete(fileToDelete);
+            }
+
+
             CacheSession("Attachments", null);
         }
 
-        public IList<Attachment> GetAttachments()
+        public IList<string> GetAttachments()
         {
-            return Get<List<Attachment>>("Attachments") ?? new List<Attachment>();
+            return Get<List<string>>("Attachments") ?? new List<string>();
         }
 
         public T Get<T>(string key)

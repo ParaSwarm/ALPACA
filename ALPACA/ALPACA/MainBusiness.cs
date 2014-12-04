@@ -122,7 +122,7 @@ namespace ALPACA
             return "deleted";
         }
 
-        public bool SendEmail(string emailBody, string emailSubject, IList<Attachment> attachments)
+        public bool SendEmail(string emailBody, string emailSubject, IList<string> attachments)
         {
             return EmailComposer.SendEmail(CurrentUser.Value, emailSubject, emailBody, attachments);
         }
@@ -153,7 +153,7 @@ namespace ALPACA
         bool SaveUser(AlpacaUser user);
         string DeleteUser(AlpacaUser user);
         IEnumerable<AlpacaUser> GetUsers();
-        bool SendEmail(string emailBody, string emailSubject, IList<Attachment> attachments);
+        bool SendEmail(string emailBody, string emailSubject, IList<string> attachments);
         string ExportContacts();
     }
 }

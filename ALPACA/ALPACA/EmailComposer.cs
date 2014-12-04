@@ -11,7 +11,7 @@ namespace ALPACA
     {
         private static readonly Regex InlineImageRegex = new Regex("<img src=\\\"data:image\\/(?<FileType>\\w*);base64,(?<Data>.*?)\" \\/>");
 
-        public static bool SendEmail(AlpacaUser currentUser, string subject, string emailBody, IList<Attachment> attachments)
+        public static bool SendEmail(AlpacaUser currentUser, string subject, string emailBody, IList<string> attachments)
         {
             var fromAddress = new MailAddress(currentUser.Email);
             string fromPassword = currentUser.EmailPassword;
@@ -34,7 +34,7 @@ namespace ALPACA
             {
                 return false;
             }
-
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             foreach (var contact in currentUser.Contacts)
             {
                 using (var message = new MailMessage { From = fromAddress, Subject = subject, Body = emailBody, IsBodyHtml = true })
@@ -42,9 +42,17 @@ namespace ALPACA
                     try
                     {
                         message.To.Add(contact);
-
+                        var attachmentList = new List<Attachment>();
                         foreach (var attachment in attachments)
-                            message.Attachments.Add(attachment);
+                        {
+                            var pathToFile = Path.Combine(appDataPath, attachment);
+                            FileStream fileToAttach = File.Open(pathToFile, FileMode.Open);
+                            attachmentList.Add(new Attachment(fileToAttach, attachment));
+                        }
+                        foreach(var file in attachmentList)
+                        {
+                            message.Attachments.Add(file);
+                        }
 
                         EmbedInlineImages(message);
 

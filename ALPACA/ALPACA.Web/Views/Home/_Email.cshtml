@@ -1,5 +1,5 @@
 ﻿@model ALPACA.Web.ViewModels.EmailViewModel
-<div class="container-fluid">
+<div id="emailSection" class="container-fluid" >
     <div class="row">
         <div class="col-md-12">
             <span class="label label-primary">Subject:</span>
@@ -134,6 +134,8 @@
             emailSubject = "(no subject)";
         }
 
+        kendo.ui.progress($('#emailSection'), true);
+
         $.post(
            '@Url.Action("SendEmail")',
            { emailBody: emailBody, emailSubject: emailSubject },
@@ -144,6 +146,7 @@
                else {
                    toastr.error("Email not sent. Please check your email settings and try again");
                }
+               kendo.ui.progress($('#emailSection'), false);
            });
     }
 

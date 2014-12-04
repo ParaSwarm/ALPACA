@@ -19,20 +19,14 @@
         <span class=" col-sm-2 col-lg-1 col-sm-pull-2">
             <button id="deleteDraftButton" onclick="deleteDraft();" class="btn btn-danger btn-block">Delete</button>
         </span>
-        <span class="col-sm-2 col-sm-offset-0 col-lg-offset-6">
+        <span class="col-sm-3 col-md-2 col-sm-offset-0 col-md-offset-2 col-lg-offset-4 col-xs-offset-0">
+            <button id="attachFile" class="btn btn-default btn-block" onclick="showAttachmentsModal();">Attachments</button>
+        </span>
+        <span class="col-sm-3 col-md-2 col-sm-offset-0">
             <button id="sendEmail" onclick="sendEmail();" class="btn btn-success btn-block">Send Email</button>
         </span>
-    </div>
-    <div class="row">
-        <span class="col-sm-2 col-sm col-lg-12 col-xs">
-            @(Html.Kendo().Upload().Name("attachments")
-                .Messages(m => m.Select("Attach File"))
-                .Async(async => async
-                    .Save("UploadAttachment", "Home")
-                    .Remove("RemoveAttachment", "Home")))
-        </span>
-    </div>
 </div>
+    </div>
 <script type="text/javascript">
     function loadDraft(e) {
         var draftName = $(e).val();
@@ -142,12 +136,53 @@
            function (data) {
                if (data.success) {
                    toastr.success("Email successfully sent!");
+                   clearAttachments("attachments");
+                   indicateAttachment();
+                   $('#EmailBody').data('kendoEditor').value("");
+                   $('#draftDropdown').val("");
+                   $('#emailSubject').val("");
                }
                else {
                    toastr.error("Email not sent. Please check your email settings and try again");
                }
                kendo.ui.progress($('#emailSection'), false);
            });
+    }
+    function showAttachmentsModal()
+    {
+        $('#attachmentsModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        $('#attachmentsModal').modal('show');
+        indicateAttachment();
+    }
+    function hideAttachmentsModal()
+    {
+        $('#attachmentsModal').modal('hide');
+        indicateAttachment();
+    }
+    function clearAttachments(id) {
+        $(".k-upload-files").remove();
+        $(".k-upload-status").remove();
+        $(".k-upload.k-header").addClass("k-upload-empty");
+        $(".k-upload-button").removeClass("k-state-focused");
+    }
+    function indicateAttachment()
+    {
+        $.get('@Url.Action("CheckForAttachments")', {},
+            function (numAttachments) {
+                if(numAttachments > 0)
+                {
+                    $("#attachFile").addClass("btn-success");
+                    $("#attachFile").removeClass("btn-default");
+                }
+                else
+                {
+                    $("#attachFile").addClass("btn-default");
+                    $("#attachFile").removeClass("btn-success");
+                }
+            });
     }
 
 
@@ -164,6 +199,30 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="modalButton" class="btn btn-success" onclick="getModalName();">Save draft</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="attachmentsModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Attachments:</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <span class="col-xs-12">
+                        @(Html.Kendo().Upload().Name("attachments")
+                        .Messages(m => m.Select("Attach File"))
+                        .Async(async => async
+                            .Save("UploadAttachment", "Home")
+                            .Remove("RemoveAttachment", "Home"))
+                            )
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="modalAttachmentsButton" class="btn btn-danger" onclick="hideAttachmentsModal();">Close</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

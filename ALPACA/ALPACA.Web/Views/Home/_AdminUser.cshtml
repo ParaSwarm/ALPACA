@@ -1,34 +1,39 @@
 ﻿@model ALPACA.Web.ViewModels.UserViewModel
 <div class="container-fluid">
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-sm-4">
         @Html.DropDownListFor(m => m.SelectedUser, new SelectList(Model.Users), "New User", new {@size = "12",@style = "font-size:14px;", @onchange = "PopulateUser(this.value);", @id = "usersListbox", @class="form-control" })
     </div>
-    <div class="col-md-8">
+    <div class="col-sm-8">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-sm-6">
             <span class="label label-primary">Username:</span>
             <input id="userName" class="form-control" />
         </div>
-        <div class="col-md-6">
-            <span class="label label-primary">Email Address:</span>
-            <input id="userEmail" class="form-control" />
-        </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
             <span class="label label-primary">Password:</span>
             <input id="userPassword" type="password" class="form-control" />
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
+            <span class="label label-primary">Email Address:</span>
+            <input id="userEmail" class="form-control" />
+        </div>
+        <div class="col-sm-6">
             <span class="label label-primary">Email Password:</span>
             <input id="userEmailPassword" type="password" class="form-control" />
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-sm-6">
             <span class="label label-primary">First Name:</span>
             <input id="userFirstName" class="form-control" />
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
+            <span class="label label-primary">Last Name:</span>
+            <input id="userLastName" class="form-control" />
+        </div>
+
+        <div class="col-sm-6">
             <span class="label label-primary">Email Service:</span>
             <br />
             @(Html.Kendo().DropDownList()
@@ -71,15 +76,16 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <span class="label label-primary">Last Name:</span>
-            <input id="userLastName" class="form-control" />
-        </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
             <span class="label label-primary" id="ServerLabel">SMTP Server:</span>
             <input id="userSMTPServer" class="form-control" />
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
+            <span class="label label-primary" id="PortLabel">SMTP Port:</span>
+            <input id="userSMTPPort" class="form-control" />
+        </div>
+
+        <div class="col-sm-6">
             <span class="label label-primary" id="AdminLabel">Administrator Privileges:</span><br />
             @(Html.Kendo().DropDownList()
             .Name("AdminDropdown")
@@ -100,18 +106,14 @@
             )
 
         </div>
-        <div class="col-md-6">
-            <span class="label label-primary" id="PortLabel">SMTP Port:</span>
-            <input id="userSMTPPort" class="form-control" />
         </div>
-    </div>
     <br />
     <div class="row">
-        <span class="col-md-4"></span>
-        <span class="col-md-4">
+        <span class="col-sm-4"></span>
+        <span class="col-sm-4">
             <button class="btn btn-danger btn-block" onclick="DeleteUser();">Delete User</button>
         </span>
-        <span class="col-md-4">
+        <span class="col-sm-4">
             <button class="btn btn-primary btn-block"  onclick="SaveUser();">Save User</button>
         </span>
     </div>

@@ -21,6 +21,7 @@ namespace ALPACA
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
+                    Timeout = 5000,
                     Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
                 };
 
